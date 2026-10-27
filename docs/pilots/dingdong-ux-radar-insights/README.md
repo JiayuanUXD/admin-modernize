@@ -6,7 +6,7 @@
 
 页面已经用 `get` / `post` / `api` 打到现网接口。这次要证明：扩完抽取之后，这 6 个接口能从副本里抽出 desired，对照手写的 actual IR 得到 gap，填上 disposition 之后能生成骨架。
 
-不改雷达 UI，不接测试环境，不把骨架接回页面。
+不改雷达 UI，不接测试环境，不把骨架接回页面。最小约束面只冻结这份副本里的存量；离线预览跑的是 `admin-preview-loop` 的 fixture，不是这个页面。
 
 ## 切片
 
@@ -93,6 +93,25 @@ node scripts/generate-skeleton.mjs \
 ```
 
 对拍时忽略各文件的 `generatedAt`。
+
+## 最小约束面
+
+规则和基线在 `guardrails/`。不改 `pilot-source/ui/app.js`，存量冻结。复跑命令、三条规则的处数（行内 style 107、游离字号 10、色值字面量 0）写在 `guardrails/README.md`。
+
+```bash
+node skills/admin-guardrails/scripts/ratchet.mjs \
+  --config docs/pilots/dingdong-ux-radar-insights/guardrails/ratchet.config.json \
+  --root docs/pilots/dingdong-ux-radar-insights \
+  --report
+
+node skills/admin-guardrails/scripts/ratchet.mjs \
+  --config docs/pilots/dingdong-ux-radar-insights/guardrails/ratchet.config.json \
+  --root docs/pilots/dingdong-ux-radar-insights
+```
+
+## 离线预览
+
+没有给雷达页面接预览，也没有把骨架接回页面。桌面 + 窄屏截图、漏 mock 冒烟，跑的是 `skills/admin-preview-loop` 的 fixture。命令和本轮 PNG 见该 skill 的「本仓库可跑的最小设施」。
 
 ## D1 前后
 

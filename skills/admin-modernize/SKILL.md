@@ -43,7 +43,7 @@ description: Use when planning or running an effort to make an existing back-off
 
 当前真实切片是叮咚买菜 · 小红书体验雷达的洞察池（列表 + 抽屉，6 个接口），记录在插件根目录 `docs/pilots/dingdong-ux-radar-insights/`。D4 在这一例上覆盖了默认：没有 OpenAPI，但后端实现已经成熟，所以用 actual IR 走后端先行，不另起一份原型契约。
 
-这次只跑通契约流水线（desired → gap → disposition → 骨架），并把踩坑写回了 `admin-api-contract`。没有改雷达页面，没有离线预览，没有接到测试环境。D1 笔记在该目录的 `d1-notes.md`。阶段 0→1 还没全跑通。
+契约流水线（desired → gap → disposition → 骨架）已经跑通，踩坑写回了 `admin-api-contract`。副本上有最小约束面（棘轮配置和基线，不改 `app.js`）。离线预览跑的是 `admin-preview-loop` 的 fixture，不是雷达页面。没有接到测试环境，没有上线。D1 笔记在该目录的 `d1-notes.md`。阶段 0→1 还没全跑通。
 
 ## 决策点（逐项问用户，不替用户选）
 

@@ -22,7 +22,7 @@
 ```
 .claude-plugin/plugin.json
 docs/roadmap-0.5.0.md         0.5.0 改进清单
-docs/pilots/dingdong-ux-radar-insights/  洞察池契约试点（未改业务仓）
+docs/pilots/dingdong-ux-radar-insights/  洞察池试点（未改业务仓；含 guardrails 棘轮基线）
 scripts/generate-skeleton.mjs 差距表过了人工门禁之后写映射骨架
 skills/
   admin-modernize/            编排：阶段、门禁、决策点 D1–D5、红线
@@ -37,6 +37,8 @@ skills/
     scripts/map-tokens.mjs    硬编码值 → 现有 token 的映射清单（存量迁移清单）
     references/ai-entry-files.md     入口文件与 new-page skill 的结构
   admin-preview-loop/         反馈环：离线预览、mock、截图、视觉回归
+    scripts/                  serve-preview、screenshot、生产包不含 mock
+    fixtures/                 列表+抽屉静态页、固定种子、本轮截图
   admin-api-contract/         对接面：数据层、契约先行、校验、晋升清单
     references/data-layer-checklist.md
     references/ir-schema.md   desired / actual / gap 三份 IR
@@ -70,6 +72,9 @@ node skills/admin-guardrails/scripts/map-tokens.mjs --tokens <token 文件或目
 node skills/admin-api-contract/scripts/extract-desired.mjs --root <原型目录> --out /tmp/desired.ir.json
 node skills/admin-api-contract/scripts/build-gap.mjs --desired /tmp/desired.ir.json --actual <openapi.json> --out /tmp/gap.ir.json
 node scripts/generate-skeleton.mjs --gap /tmp/gap.ir.json --out-dir /tmp/skeleton
+APP_MODE=preview node skills/admin-preview-loop/scripts/serve-preview.mjs
+node skills/admin-preview-loop/scripts/screenshot.mjs
+node skills/admin-preview-loop/scripts/check-prod-bundle.mjs
 ```
 
 ## 状态（0.4.0）
@@ -88,6 +93,6 @@ node scripts/generate-skeleton.mjs --gap /tmp/gap.ir.json --out-dir /tmp/skeleto
 | `admin-repo-split` | 只有流程文档：契约先行、逻辑拆→物理拆、验收、回滚。`git filter-repo` 的命令没有在真实历史数据上跑过 |
 | dd-design 规则包 | 7 条与参考 lint 对账一致；S3 修了漏单行写法（84 到 186），新增 S4（rgb/hsl） |
 | 反馈环「交付必含」 | 补写后用全新 agent 复测：Vue 2 + Element UI + vue-cli + axios 场景，用户施压「示例数据写死在组件里」。6 项评分全过（mock 在网络层、环境开关加生产包检查、固定种子加状态矩阵、截图脚本含收集项并非零退出、一条命令启动、页面组件未改）。缺的项（截图脚本未运行、基准图未存）都写了原因和补法。1 次，不是统计结论 |
-| 未验证 | 反馈环基线组；编排、对接面的修订版没有复测；截图命令从未在真实浏览器里跑过；vue-cli 构建与 mock 中间件没在真实项目里跑过；约束面、存量迁移没有第二次复测；拓扑扫描没在真实单仓/分仓上验证过；拆仓流程没实际拆过任何仓库；`map-tokens.mjs` 没在真实主题文件上验证过。第二个后台只在洞察池源码副本上跑过契约流水线（`docs/pilots/dingdong-ux-radar-insights/`），没有改 UI，也没有接测试环境 |
+| 未验证 | 反馈环的无 skill agent 对照仍未跑（fixture 截图基线在 `skills/admin-preview-loop/fixtures/screenshots/`，桌面 + 窄屏已在真实浏览器跑过，漏 mock 会非零退出）；编排、对接面的修订版没有复测；vue-cli 构建与 mock 中间件没在真实项目里跑过；约束面、存量迁移没有第二次复测；拓扑扫描没在真实单仓/分仓上验证过；拆仓流程没实际拆过任何仓库；`map-tokens.mjs` 没在真实主题文件上验证过。第二个后台在洞察池源码副本上跑过契约流水线和棘轮基线（未改 UI），离线预览跑的是 skill fixture，没有接测试环境 |
 
 本目录还不是 git 仓库。
