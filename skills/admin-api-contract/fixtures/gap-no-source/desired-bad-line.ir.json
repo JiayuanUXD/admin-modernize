@@ -1,0 +1,17 @@
+{
+  "version": "1",
+  "generatedAt": "2026-01-01T00:00:00.000Z",
+  "generator": "manual",
+  "operations": [
+    {
+      "id": "listGuess",
+      "method": "GET",
+      "path": "/api/guess",
+      "summary": "行号是占位",
+      "request": { "query": {}, "body": null },
+      "response": { "fields": [] },
+      "sources": [{ "file": "src/pages/guess/index.tsx", "lineStart": 0 }],
+      "confidence": "low"
+    }
+  ]
+}

@@ -38,7 +38,7 @@ JSON Schema（draft-07）在 `../schemas/`：
 
 - `confidence`：`high | medium | low`。脚本对字面量 URL 写 `medium`，对模板 URL 写 `low`。`high` 只留给人工改过的条目，脚本不写。
 - `sources` 至少一条。`file` 相对扫描根目录，`lineStart` 从 1 起。跨行调用可带 `lineEnd`。能认出外层函数时带 `symbol`。
-- 没有出处的接口不许写入。变量拼出来、脚本认不出 URL 的调用直接跳过，不编一条。
+- 没有出处的接口不许写入。变量拼出来、脚本认不出 URL 的调用直接跳过，不编一条。`build-gap` 若读到空 `sources`、空 `file` 或 `lineStart` 小于 1，退出码 2，不写 gap 文件。
 
 ## actual-capabilities
 

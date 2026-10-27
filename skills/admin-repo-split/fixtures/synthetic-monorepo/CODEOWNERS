@@ -1,0 +1,4 @@
+# 演练占位，不是真人账号。
+/apps/web/ @web-owner
+/services/api/ @api-owner
+/contracts/ @contract-owner

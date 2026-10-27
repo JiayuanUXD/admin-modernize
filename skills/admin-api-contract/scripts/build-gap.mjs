@@ -6,6 +6,7 @@
  * 不解析 YAML。对齐键是方法 + 规范化路径。
  * status：match（响应字段集合相同）、reshape（路径相同字段不同）、missing（期望有、实际没有）。
  * disposition 与 exposure 固定写 null，等人工门禁。
+ * 期望和实际的每条操作都必须有 sources（file + lineStart）。没有出处的不写 gap 文件。
  *
  * 用法
  *   node build-gap.mjs --desired <desired.ir.json> --actual <openapi.json|actual.ir.json> [--out gap.ir.json]
@@ -99,6 +100,17 @@ function balancedEnd(s, openIdx) {
     i++;
   }
   return s.length - 1;
+}
+function requireSources(op, label) {
+  const id = op && op.id ? String(op.id) : label;
+  if (!op || !Array.isArray(op.sources) || op.sources.length === 0) {
+    die(`${label}（${id}）没有 sources，拒绝无出处的推测接口进入 gap-table`);
+  }
+  for (const src of op.sources) {
+    if (!src || typeof src.file !== 'string' || src.file.trim() === '' || !(src.lineStart >= 1)) {
+      die(`${label}（${id}）有不完整的 sources，拒绝无出处的推测接口进入 gap-table`);
+    }
+  }
 }
 function sourceFile(file) {
   const abs = resolve(file);
@@ -250,10 +262,7 @@ function fromActualIr(doc, file) {
     if (!op || typeof op !== 'object') die(`${file} 第 ${i + 1} 条不是对象`);
     const method = String(op.method || '').toUpperCase();
     if (!op.id || !METHODS.has(method) || !op.path) die(`${file} 第 ${i + 1} 条缺 id、method 或 path`);
-    if (!Array.isArray(op.sources) || op.sources.length === 0) die(`${file} 的 ${op.id} 没有 sources，拒绝无出处的能力`);
-    for (const src of op.sources) {
-      if (!src || !src.file || !(src.lineStart >= 1)) die(`${file} 的 ${op.id} 有不完整的 sources`);
-    }
+    requireSources(op, file);
     const fields = op.response && Array.isArray(op.response.fields) ? op.response.fields.map(String) : [];
     return { id: String(op.id), method, path: normalizePath(op.path), fields: [...fields].sort(), sources: op.sources };
   });
@@ -283,6 +292,7 @@ function notesFor(status, method, path, desiredFields, actualFields) {
 
 const desiredDoc = readJson(desiredPath).json;
 if (!desiredDoc || !Array.isArray(desiredDoc.operations)) die(`${desiredPath} 不是 desired IR：缺少 operations`);
+desiredDoc.operations.forEach((op, i) => requireSources(op, `${desiredPath} 第 ${i + 1} 条`));
 const actualOps = loadActual(actualPath);
 const actualByKey = new Map();
 for (const op of actualOps) actualByKey.set(`${op.method} ${op.path}`, op);

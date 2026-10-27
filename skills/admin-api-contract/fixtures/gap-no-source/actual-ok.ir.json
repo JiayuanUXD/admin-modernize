@@ -1,0 +1,14 @@
+{
+  "version": "1",
+  "generatedAt": "2026-01-01T00:00:00.000Z",
+  "generator": "manual",
+  "operations": [
+    {
+      "id": "listItems",
+      "method": "GET",
+      "path": "/api/items",
+      "sources": [{ "file": "services/api/items.js", "lineStart": 8 }],
+      "response": { "fields": ["id"] }
+    }
+  ]
+}

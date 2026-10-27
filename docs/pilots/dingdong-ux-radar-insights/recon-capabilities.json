@@ -1,0 +1,1037 @@
+{
+  "version": "1",
+  "generator": "admin-recon-capabilities",
+  "root": "docs/pilots/dingdong-ux-radar-insights/pilot-source",
+  "notes": [
+    "页面接口只来自 extract-desired。认不出 URL 的调用不在表里。",
+    "数据层方法是 services / pipeline / controllers 等文件里不以 _ 开头的具名函数。不从路由分支反推接口。",
+    ".vue 单文件组件里的方法定义本模式不扫。页面里的调用仍然来自 extract-desired。",
+    "没有 pages/<模块>/ 时，模块名取页面文件的父目录，或数据层文件名。路径资源是路径上的第一个静态段，不是业务模块名。"
+  ],
+  "counts": {
+    "modules": 3,
+    "pageCalls": 71,
+    "dataLayerCalls": 0,
+    "dataLayerMethods": 36
+  },
+  "modules": [
+    {
+      "module": "api",
+      "pageCalls": [],
+      "dataLayerCalls": [],
+      "dataLayerMethods": [
+        {
+          "name": "Api.can_write",
+          "file": "pipeline/api.py",
+          "lineStart": 188,
+          "kind": "method"
+        },
+        {
+          "name": "Api.dispatch",
+          "file": "pipeline/api.py",
+          "lineStart": 199,
+          "kind": "method"
+        },
+        {
+          "name": "make_handler",
+          "file": "pipeline/api.py",
+          "lineStart": 689,
+          "kind": "function"
+        },
+        {
+          "name": "Handler.log_message",
+          "file": "pipeline/api.py",
+          "lineStart": 700,
+          "kind": "method"
+        },
+        {
+          "name": "Handler.do_GET",
+          "file": "pipeline/api.py",
+          "lineStart": 738,
+          "kind": "method"
+        },
+        {
+          "name": "Handler.do_POST",
+          "file": "pipeline/api.py",
+          "lineStart": 744,
+          "kind": "method"
+        },
+        {
+          "name": "Handler.do_PUT",
+          "file": "pipeline/api.py",
+          "lineStart": 748,
+          "kind": "method"
+        },
+        {
+          "name": "Handler.do_DELETE",
+          "file": "pipeline/api.py",
+          "lineStart": 753,
+          "kind": "method"
+        },
+        {
+          "name": "Handler.do_OPTIONS",
+          "file": "pipeline/api.py",
+          "lineStart": 757,
+          "kind": "method"
+        },
+        {
+          "name": "serve",
+          "file": "pipeline/api.py",
+          "lineStart": 834,
+          "kind": "function"
+        }
+      ]
+    },
+    {
+      "module": "insights",
+      "pageCalls": [],
+      "dataLayerCalls": [],
+      "dataLayerMethods": [
+        {
+          "name": "normalize_filters",
+          "file": "pipeline/insights.py",
+          "lineStart": 80,
+          "kind": "function"
+        },
+        {
+          "name": "resolve_me",
+          "file": "pipeline/insights.py",
+          "lineStart": 140,
+          "kind": "function"
+        },
+        {
+          "name": "load_trackers",
+          "file": "pipeline/insights.py",
+          "lineStart": 176,
+          "kind": "function"
+        },
+        {
+          "name": "build_where",
+          "file": "pipeline/insights.py",
+          "lineStart": 230,
+          "kind": "function"
+        },
+        {
+          "name": "list_insights",
+          "file": "pipeline/insights.py",
+          "lineStart": 381,
+          "kind": "function"
+        },
+        {
+          "name": "facets",
+          "file": "pipeline/insights.py",
+          "lineStart": 486,
+          "kind": "function"
+        },
+        {
+          "name": "get_insight",
+          "file": "pipeline/insights.py",
+          "lineStart": 594,
+          "kind": "function"
+        },
+        {
+          "name": "list_events",
+          "file": "pipeline/insights.py",
+          "lineStart": 695,
+          "kind": "function"
+        },
+        {
+          "name": "export_csv",
+          "file": "pipeline/insights.py",
+          "lineStart": 704,
+          "kind": "function"
+        },
+        {
+          "name": "export_posts",
+          "file": "pipeline/insights.py",
+          "lineStart": 780,
+          "kind": "function"
+        },
+        {
+          "name": "claim",
+          "file": "pipeline/insights.py",
+          "lineStart": 921,
+          "kind": "function"
+        },
+        {
+          "name": "set_status",
+          "file": "pipeline/insights.py",
+          "lineStart": 944,
+          "kind": "function"
+        },
+        {
+          "name": "set_note",
+          "file": "pipeline/insights.py",
+          "lineStart": 980,
+          "kind": "function"
+        },
+        {
+          "name": "set_flag",
+          "file": "pipeline/insights.py",
+          "lineStart": 992,
+          "kind": "function"
+        },
+        {
+          "name": "tag_manual",
+          "file": "pipeline/insights.py",
+          "lineStart": 1008,
+          "kind": "function"
+        },
+        {
+          "name": "set_severity",
+          "file": "pipeline/insights.py",
+          "lineStart": 1039,
+          "kind": "function"
+        },
+        {
+          "name": "bulk",
+          "file": "pipeline/insights.py",
+          "lineStart": 1143,
+          "kind": "function"
+        },
+        {
+          "name": "north_star",
+          "file": "pipeline/insights.py",
+          "lineStart": 1212,
+          "kind": "function"
+        },
+        {
+          "name": "list_views",
+          "file": "pipeline/insights.py",
+          "lineStart": 1264,
+          "kind": "function"
+        },
+        {
+          "name": "get_view",
+          "file": "pipeline/insights.py",
+          "lineStart": 1274,
+          "kind": "function"
+        },
+        {
+          "name": "save_view",
+          "file": "pipeline/insights.py",
+          "lineStart": 1287,
+          "kind": "function"
+        },
+        {
+          "name": "delete_view",
+          "file": "pipeline/insights.py",
+          "lineStart": 1307,
+          "kind": "function"
+        },
+        {
+          "name": "seed_builtin_views",
+          "file": "pipeline/insights.py",
+          "lineStart": 1326,
+          "kind": "function"
+        },
+        {
+          "name": "summary",
+          "file": "pipeline/insights.py",
+          "lineStart": 1343,
+          "kind": "function"
+        },
+        {
+          "name": "meta",
+          "file": "pipeline/insights.py",
+          "lineStart": 1379,
+          "kind": "function"
+        },
+        {
+          "name": "owner_loads",
+          "file": "pipeline/insights.py",
+          "lineStart": 1456,
+          "kind": "function"
+        }
+      ]
+    },
+    {
+      "module": "ui",
+      "pageCalls": [
+        {
+          "id": "listMeta",
+          "method": "GET",
+          "path": "/api/meta",
+          "resource": "meta",
+          "file": "ui/app.js",
+          "lineStart": 476,
+          "lineEnd": null,
+          "symbol": "boot",
+          "confidence": "medium"
+        },
+        {
+          "id": "listSummary",
+          "method": "GET",
+          "path": "/api/summary",
+          "resource": "summary",
+          "file": "ui/app.js",
+          "lineStart": 476,
+          "lineEnd": null,
+          "symbol": "boot",
+          "confidence": "medium"
+        },
+        {
+          "id": "listViews",
+          "method": "GET",
+          "path": "/api/views",
+          "resource": "views",
+          "file": "ui/app.js",
+          "lineStart": 476,
+          "lineEnd": null,
+          "symbol": "boot",
+          "confidence": "medium"
+        },
+        {
+          "id": "listHealth",
+          "method": "GET",
+          "path": "/api/health",
+          "resource": "health",
+          "file": "ui/app.js",
+          "lineStart": 477,
+          "lineEnd": null,
+          "symbol": "boot",
+          "confidence": "medium"
+        },
+        {
+          "id": "listNorthStar",
+          "method": "GET",
+          "path": "/api/north-star",
+          "resource": "north-star",
+          "file": "ui/app.js",
+          "lineStart": 477,
+          "lineEnd": null,
+          "symbol": "boot",
+          "confidence": "medium"
+        },
+        {
+          "id": "listInsights",
+          "method": "GET",
+          "path": "/api/insights",
+          "resource": "insights",
+          "file": "ui/app.js",
+          "lineStart": 814,
+          "lineEnd": null,
+          "symbol": "cmdkSearchRemote",
+          "confidence": "low"
+        },
+        {
+          "id": "listBoard",
+          "method": "GET",
+          "path": "/api/board",
+          "resource": "board",
+          "file": "ui/app.js",
+          "lineStart": 815,
+          "lineEnd": null,
+          "symbol": "cmdkSearchRemote",
+          "confidence": "low"
+        },
+        {
+          "id": "getView",
+          "method": "GET",
+          "path": "/api/views/{param}",
+          "resource": "views",
+          "file": "ui/app.js",
+          "lineStart": 1232,
+          "lineEnd": null,
+          "symbol": "applyView",
+          "confidence": "low"
+        },
+        {
+          "id": "createView",
+          "method": "POST",
+          "path": "/api/views",
+          "resource": "views",
+          "file": "ui/app.js",
+          "lineStart": 1266,
+          "lineEnd": null,
+          "symbol": "saveView",
+          "confidence": "medium"
+        },
+        {
+          "id": "listViews",
+          "method": "GET",
+          "path": "/api/views",
+          "resource": "views",
+          "file": "ui/app.js",
+          "lineStart": 1267,
+          "lineEnd": null,
+          "symbol": "saveView",
+          "confidence": "medium"
+        },
+        {
+          "id": "deleteView",
+          "method": "DELETE",
+          "path": "/api/views/{param}",
+          "resource": "views",
+          "file": "ui/app.js",
+          "lineStart": 1289,
+          "lineEnd": null,
+          "symbol": "delView",
+          "confidence": "low"
+        },
+        {
+          "id": "listViews",
+          "method": "GET",
+          "path": "/api/views",
+          "resource": "views",
+          "file": "ui/app.js",
+          "lineStart": 1290,
+          "lineEnd": null,
+          "symbol": "delView",
+          "confidence": "medium"
+        },
+        {
+          "id": "listInsights",
+          "method": "GET",
+          "path": "/api/insights",
+          "resource": "insights",
+          "file": "ui/app.js",
+          "lineStart": 1322,
+          "lineEnd": null,
+          "symbol": "loadInsights",
+          "confidence": "low"
+        },
+        {
+          "id": "listFacets",
+          "method": "GET",
+          "path": "/api/facets",
+          "resource": "facets",
+          "file": "ui/app.js",
+          "lineStart": 1323,
+          "lineEnd": null,
+          "symbol": "loadInsights",
+          "confidence": "low"
+        },
+        {
+          "id": "createInsightsClaim",
+          "method": "POST",
+          "path": "/api/insights/{param}/claim",
+          "resource": "insights",
+          "file": "ui/app.js",
+          "lineStart": 1513,
+          "lineEnd": null,
+          "symbol": "ownerMenuSpec",
+          "confidence": "low"
+        },
+        {
+          "id": "createInsightsClaim",
+          "method": "POST",
+          "path": "/api/insights/{param}/claim",
+          "resource": "insights",
+          "file": "ui/app.js",
+          "lineStart": 1526,
+          "lineEnd": null,
+          "symbol": "unclaimOne",
+          "confidence": "low"
+        },
+        {
+          "id": "createInsightsFlag",
+          "method": "POST",
+          "path": "/api/insights/{param}/flag",
+          "resource": "insights",
+          "file": "ui/app.js",
+          "lineStart": 1536,
+          "lineEnd": null,
+          "symbol": "flagAct",
+          "confidence": "low"
+        },
+        {
+          "id": "createInsightsStatus",
+          "method": "POST",
+          "path": "/api/insights/{param}/status",
+          "resource": "insights",
+          "file": "ui/app.js",
+          "lineStart": 1559,
+          "lineEnd": null,
+          "symbol": "stMenuSpec",
+          "confidence": "low"
+        },
+        {
+          "id": "createInsightsSeverity",
+          "method": "POST",
+          "path": "/api/insights/{param}/severity",
+          "resource": "insights",
+          "file": "ui/app.js",
+          "lineStart": 1585,
+          "lineEnd": null,
+          "symbol": "sevLabel",
+          "confidence": "low"
+        },
+        {
+          "id": "createExportPosts.csv",
+          "method": "POST",
+          "path": "/api/export/posts.csv",
+          "resource": "export",
+          "file": "ui/app.js",
+          "lineStart": 1678,
+          "lineEnd": null,
+          "symbol": "exportPosts",
+          "confidence": "medium"
+        },
+        {
+          "id": "createInsightsBulk",
+          "method": "POST",
+          "path": "/api/insights/bulk",
+          "resource": "insights",
+          "file": "ui/app.js",
+          "lineStart": 1869,
+          "lineEnd": null,
+          "symbol": "doBulk",
+          "confidence": "medium"
+        },
+        {
+          "id": "listInsightsOwnerLoads",
+          "method": "GET",
+          "path": "/api/insights/owner-loads",
+          "resource": "insights",
+          "file": "ui/app.js",
+          "lineStart": 1915,
+          "lineEnd": null,
+          "symbol": "openAssign",
+          "confidence": "medium"
+        },
+        {
+          "id": "createInsightsClaim",
+          "method": "POST",
+          "path": "/api/insights/{param}/claim",
+          "resource": "insights",
+          "file": "ui/app.js",
+          "lineStart": 2001,
+          "lineEnd": 2002,
+          "symbol": "asgGo",
+          "confidence": "low"
+        },
+        {
+          "id": "createInsightsBulk",
+          "method": "POST",
+          "path": "/api/insights/bulk",
+          "resource": "insights",
+          "file": "ui/app.js",
+          "lineStart": 2011,
+          "lineEnd": 2012,
+          "symbol": "asgGo",
+          "confidence": "medium"
+        },
+        {
+          "id": "listNorthStar",
+          "method": "GET",
+          "path": "/api/north-star",
+          "resource": "north-star",
+          "file": "ui/app.js",
+          "lineStart": 2040,
+          "lineEnd": null,
+          "symbol": "refreshCounters",
+          "confidence": "medium"
+        },
+        {
+          "id": "listSummary",
+          "method": "GET",
+          "path": "/api/summary",
+          "resource": "summary",
+          "file": "ui/app.js",
+          "lineStart": 2040,
+          "lineEnd": null,
+          "symbol": "refreshCounters",
+          "confidence": "medium"
+        },
+        {
+          "id": "getInsight",
+          "method": "GET",
+          "path": "/api/insights/{param}",
+          "resource": "insights",
+          "file": "ui/app.js",
+          "lineStart": 2166,
+          "lineEnd": null,
+          "symbol": "openDetail",
+          "confidence": "low"
+        },
+        {
+          "id": "createInsightsClaim",
+          "method": "POST",
+          "path": "/api/insights/{param}/claim",
+          "resource": "insights",
+          "file": "ui/app.js",
+          "lineStart": 2295,
+          "lineEnd": null,
+          "symbol": "claimTo",
+          "confidence": "low"
+        },
+        {
+          "id": "createInsightsStatus",
+          "method": "POST",
+          "path": "/api/insights/{param}/status",
+          "resource": "insights",
+          "file": "ui/app.js",
+          "lineStart": 2311,
+          "lineEnd": 2312,
+          "symbol": "claimTo",
+          "confidence": "low"
+        },
+        {
+          "id": "createInsightsNote",
+          "method": "POST",
+          "path": "/api/insights/{param}/note",
+          "resource": "insights",
+          "file": "ui/app.js",
+          "lineStart": 2318,
+          "lineEnd": 2319,
+          "symbol": "claimTo",
+          "confidence": "low"
+        },
+        {
+          "id": "createInsightsStatus",
+          "method": "POST",
+          "path": "/api/insights/{param}/status",
+          "resource": "insights",
+          "file": "ui/app.js",
+          "lineStart": 2327,
+          "lineEnd": 2328,
+          "symbol": "claimTo",
+          "confidence": "low"
+        },
+        {
+          "id": "createInsightsTag",
+          "method": "POST",
+          "path": "/api/insights/{param}/tag",
+          "resource": "insights",
+          "file": "ui/app.js",
+          "lineStart": 2336,
+          "lineEnd": 2338,
+          "symbol": "claimTo",
+          "confidence": "low"
+        },
+        {
+          "id": "createInsightsTag",
+          "method": "POST",
+          "path": "/api/insights/{param}/tag",
+          "resource": "insights",
+          "file": "ui/app.js",
+          "lineStart": 2347,
+          "lineEnd": 2348,
+          "symbol": "claimTo",
+          "confidence": "low"
+        },
+        {
+          "id": "listBoard",
+          "method": "GET",
+          "path": "/api/board",
+          "resource": "board",
+          "file": "ui/app.js",
+          "lineStart": 2456,
+          "lineEnd": null,
+          "symbol": "loadBoard",
+          "confidence": "low"
+        },
+        {
+          "id": "listBoardMeta",
+          "method": "GET",
+          "path": "/api/board/meta",
+          "resource": "board",
+          "file": "ui/app.js",
+          "lineStart": 2457,
+          "lineEnd": null,
+          "symbol": "loadBoard",
+          "confidence": "medium"
+        },
+        {
+          "id": "createBoardStatus",
+          "method": "POST",
+          "path": "/api/board/{param}/status",
+          "resource": "board",
+          "file": "ui/app.js",
+          "lineStart": 2692,
+          "lineEnd": 2693,
+          "symbol": "doThemeStatus",
+          "confidence": "low"
+        },
+        {
+          "id": "getBoard",
+          "method": "GET",
+          "path": "/api/board/{param}",
+          "resource": "board",
+          "file": "ui/app.js",
+          "lineStart": 2709,
+          "lineEnd": null,
+          "symbol": "openCard",
+          "confidence": "low"
+        },
+        {
+          "id": "createBoardStatus",
+          "method": "POST",
+          "path": "/api/board/{param}/status",
+          "resource": "board",
+          "file": "ui/app.js",
+          "lineStart": 2822,
+          "lineEnd": null,
+          "symbol": "save",
+          "confidence": "low"
+        },
+        {
+          "id": "listWorkbench",
+          "method": "GET",
+          "path": "/api/workbench",
+          "resource": "workbench",
+          "file": "ui/app.js",
+          "lineStart": 2874,
+          "lineEnd": null,
+          "symbol": "loadWorkbench",
+          "confidence": "low"
+        },
+        {
+          "id": "listWorkbenchSummary",
+          "method": "GET",
+          "path": "/api/workbench/summary",
+          "resource": "workbench",
+          "file": "ui/app.js",
+          "lineStart": 2897,
+          "lineEnd": null,
+          "symbol": "loadWbBadge",
+          "confidence": "low"
+        },
+        {
+          "id": "listOpsSummary",
+          "method": "GET",
+          "path": "/api/ops/summary",
+          "resource": "ops",
+          "file": "ui/app.js",
+          "lineStart": 2898,
+          "lineEnd": null,
+          "symbol": "loadWbBadge",
+          "confidence": "medium"
+        },
+        {
+          "id": "listSettingsSummary",
+          "method": "GET",
+          "path": "/api/settings/summary",
+          "resource": "settings",
+          "file": "ui/app.js",
+          "lineStart": 2899,
+          "lineEnd": null,
+          "symbol": "loadWbBadge",
+          "confidence": "medium"
+        },
+        {
+          "id": "listArchiveSummary",
+          "method": "GET",
+          "path": "/api/archive/summary",
+          "resource": "archive",
+          "file": "ui/app.js",
+          "lineStart": 2900,
+          "lineEnd": null,
+          "symbol": "loadWbBadge",
+          "confidence": "medium"
+        },
+        {
+          "id": "createInsightsBulk",
+          "method": "POST",
+          "path": "/api/insights/bulk",
+          "resource": "insights",
+          "file": "ui/app.js",
+          "lineStart": 3256,
+          "lineEnd": null,
+          "symbol": "wbBulkClaim",
+          "confidence": "medium"
+        },
+        {
+          "id": "createInsightsClaim",
+          "method": "POST",
+          "path": "/api/insights/{param}/claim",
+          "resource": "insights",
+          "file": "ui/app.js",
+          "lineStart": 3301,
+          "lineEnd": null,
+          "symbol": "wbClaim",
+          "confidence": "low"
+        },
+        {
+          "id": "createInsightsStatus",
+          "method": "POST",
+          "path": "/api/insights/{param}/status",
+          "resource": "insights",
+          "file": "ui/app.js",
+          "lineStart": 3311,
+          "lineEnd": null,
+          "symbol": "wbSetStatus",
+          "confidence": "low"
+        },
+        {
+          "id": "createBoardStatus",
+          "method": "POST",
+          "path": "/api/board/{param}/status",
+          "resource": "board",
+          "file": "ui/app.js",
+          "lineStart": 3327,
+          "lineEnd": 3328,
+          "symbol": "wbThemeStatus",
+          "confidence": "low"
+        },
+        {
+          "id": "listOps",
+          "method": "GET",
+          "path": "/api/ops",
+          "resource": "ops",
+          "file": "ui/app.js",
+          "lineStart": 3357,
+          "lineEnd": null,
+          "symbol": "loadOps",
+          "confidence": "medium"
+        },
+        {
+          "id": "listJobs",
+          "method": "GET",
+          "path": "/api/jobs",
+          "resource": "jobs",
+          "file": "ui/app.js",
+          "lineStart": 3436,
+          "lineEnd": null,
+          "symbol": "startOpsJobPoll",
+          "confidence": "medium"
+        },
+        {
+          "id": "createJob",
+          "method": "POST",
+          "path": "/api/jobs",
+          "resource": "jobs",
+          "file": "ui/app.js",
+          "lineStart": 3563,
+          "lineEnd": null,
+          "symbol": "runOpsJob",
+          "confidence": "medium"
+        },
+        {
+          "id": "getJob",
+          "method": "GET",
+          "path": "/api/jobs/{param}",
+          "resource": "jobs",
+          "file": "ui/app.js",
+          "lineStart": 3587,
+          "lineEnd": null,
+          "symbol": "toggleJobLog",
+          "confidence": "low"
+        },
+        {
+          "id": "listRollbackPreview",
+          "method": "GET",
+          "path": "/api/rollback/preview",
+          "resource": "rollback",
+          "file": "ui/app.js",
+          "lineStart": 3991,
+          "lineEnd": null,
+          "symbol": "pickBatch",
+          "confidence": "low"
+        },
+        {
+          "id": "createRollbackApply",
+          "method": "POST",
+          "path": "/api/rollback/apply",
+          "resource": "rollback",
+          "file": "ui/app.js",
+          "lineStart": 4012,
+          "lineEnd": 4013,
+          "symbol": "rbApply",
+          "confidence": "medium"
+        },
+        {
+          "id": "createSamplesDraw",
+          "method": "POST",
+          "path": "/api/samples/draw",
+          "resource": "samples",
+          "file": "ui/app.js",
+          "lineStart": 4238,
+          "lineEnd": null,
+          "symbol": "drawSamples",
+          "confidence": "medium"
+        },
+        {
+          "id": "createSamplesReview",
+          "method": "POST",
+          "path": "/api/samples/{param}/review",
+          "resource": "samples",
+          "file": "ui/app.js",
+          "lineStart": 4286,
+          "lineEnd": 4287,
+          "symbol": "postSampleReview",
+          "confidence": "low"
+        },
+        {
+          "id": "listTrackers",
+          "method": "GET",
+          "path": "/api/trackers",
+          "resource": "trackers",
+          "file": "ui/app.js",
+          "lineStart": 4379,
+          "lineEnd": null,
+          "symbol": "loadTrackers",
+          "confidence": "low"
+        },
+        {
+          "id": "listTrackersMeta",
+          "method": "GET",
+          "path": "/api/trackers/meta",
+          "resource": "trackers",
+          "file": "ui/app.js",
+          "lineStart": 4380,
+          "lineEnd": null,
+          "symbol": "loadTrackers",
+          "confidence": "medium"
+        },
+        {
+          "id": "createTrackersStatus",
+          "method": "POST",
+          "path": "/api/trackers/{param}/status",
+          "resource": "trackers",
+          "file": "ui/app.js",
+          "lineStart": 4714,
+          "lineEnd": 4715,
+          "symbol": "doTrackerStatus",
+          "confidence": "low"
+        },
+        {
+          "id": "createTrackersStatus",
+          "method": "POST",
+          "path": "/api/trackers/{param}/status",
+          "resource": "trackers",
+          "file": "ui/app.js",
+          "lineStart": 4909,
+          "lineEnd": null,
+          "symbol": "save",
+          "confidence": "low"
+        },
+        {
+          "id": "listDashboard",
+          "method": "GET",
+          "path": "/api/dashboard",
+          "resource": "dashboard",
+          "file": "ui/app.js",
+          "lineStart": 4975,
+          "lineEnd": null,
+          "symbol": "loadDashboard",
+          "confidence": "low"
+        },
+        {
+          "id": "listSettings",
+          "method": "GET",
+          "path": "/api/settings",
+          "resource": "settings",
+          "file": "ui/app.js",
+          "lineStart": 5301,
+          "lineEnd": null,
+          "symbol": "loadConfig",
+          "confidence": "medium"
+        },
+        {
+          "id": "createJob",
+          "method": "POST",
+          "path": "/api/jobs",
+          "resource": "jobs",
+          "file": "ui/app.js",
+          "lineStart": 5811,
+          "lineEnd": null,
+          "symbol": "cfgRunAction",
+          "confidence": "medium"
+        },
+        {
+          "id": "getJob",
+          "method": "GET",
+          "path": "/api/jobs/{param}",
+          "resource": "jobs",
+          "file": "ui/app.js",
+          "lineStart": 5830,
+          "lineEnd": null,
+          "symbol": "cfgPollJob",
+          "confidence": "low"
+        },
+        {
+          "id": "listSettingsTest",
+          "method": "GET",
+          "path": "/api/settings/test",
+          "resource": "settings",
+          "file": "ui/app.js",
+          "lineStart": 5986,
+          "lineEnd": null,
+          "symbol": "runCfgTest",
+          "confidence": "low"
+        },
+        {
+          "id": "listSettingsDiff",
+          "method": "GET",
+          "path": "/api/settings/diff",
+          "resource": "settings",
+          "file": "ui/app.js",
+          "lineStart": 6012,
+          "lineEnd": 6013,
+          "symbol": "loadCfgDiff",
+          "confidence": "low"
+        },
+        {
+          "id": "getSettingsEdit",
+          "method": "GET",
+          "path": "/api/settings/edit/{param}",
+          "resource": "settings",
+          "file": "ui/app.js",
+          "lineStart": 6078,
+          "lineEnd": null,
+          "symbol": "loadCfgEditor",
+          "confidence": "low"
+        },
+        {
+          "id": "createSettingsPreview",
+          "method": "POST",
+          "path": "/api/settings/preview",
+          "resource": "settings",
+          "file": "ui/app.js",
+          "lineStart": 6464,
+          "lineEnd": null,
+          "symbol": "cfgEditPreview",
+          "confidence": "medium"
+        },
+        {
+          "id": "updateSettingsEdit",
+          "method": "PUT",
+          "path": "/api/settings/edit/{param}",
+          "resource": "settings",
+          "file": "ui/app.js",
+          "lineStart": 6492,
+          "lineEnd": null,
+          "symbol": "cfgEditSave",
+          "confidence": "low"
+        },
+        {
+          "id": "listSettingsTest",
+          "method": "GET",
+          "path": "/api/settings/test",
+          "resource": "settings",
+          "file": "ui/app.js",
+          "lineStart": 6590,
+          "lineEnd": null,
+          "symbol": "cfgEdTestTracker",
+          "confidence": "low"
+        },
+        {
+          "id": "listArchive",
+          "method": "GET",
+          "path": "/api/archive",
+          "resource": "archive",
+          "file": "ui/app.js",
+          "lineStart": 6726,
+          "lineEnd": null,
+          "symbol": "loadArchive",
+          "confidence": "medium"
+        },
+        {
+          "id": "getArchiveWeekly",
+          "method": "GET",
+          "path": "/api/archive/weekly/{param}",
+          "resource": "archive",
+          "file": "ui/app.js",
+          "lineStart": 6959,
+          "lineEnd": null,
+          "symbol": "loadWeekly",
+          "confidence": "low"
+        }
+      ],
+      "dataLayerCalls": [],
+      "dataLayerMethods": []
+    }
+  ]
+}

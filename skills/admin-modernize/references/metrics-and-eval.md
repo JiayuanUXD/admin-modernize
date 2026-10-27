@@ -40,6 +40,8 @@
 
 评分表（CSV）：`date,benchmark,model,first_pass,rework_minutes,causes,notes`。
 
+文件在 `docs/ai-benchmarks/scores.csv`。三条脱敏需求和契约片段在同一目录。复测剧本在 `docs/ai-benchmarks/retest-playbook.md`。表里还没有分数：编排和对接面的修订版没有用全新 agent 复测。
+
 ## 治理
 
 - 标准 v1 在试点后冻结。变更需写明动机、重跑基准、记变更日志并升版本号。

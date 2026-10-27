@@ -57,4 +57,6 @@ node <本 skill>/scripts/inventory.mjs --topology <含多个 git 仓的父目录
 - **前端仓里的 Node 脚本**：`server/`、`api/` 目录名本身不算后端证据，要看构建文件或后端框架依赖。
 - **服务端模板少**：少于 10 个时只作提示，不改形态——尾部几个模板页不值得单独一条迁移通道。
 - **微前端**：只在依赖里判定；壳工程没有 qiankun 依赖但实际是微前端的情况会漏，向用户确认。
-- **monorepo 的子包**：`examples/`、`fixtures/`、`__tests__/` 下的 package.json 不算子包。
+- **monorepo 的子包**：`examples/`、`fixtures/`、`__tests__/` 下的 package.json 不算子包。这些目录里的页面文件、后端源码和契约文件也不参与形态判定。
+- **子包里的 express**：根 `package.json` 没有后端依赖、后端源码也不够 5 个时，form 不会因为子包被标成「后端」就变成 fullstack。
+- 本仓库上跑出来的形态和几条误判，写在 `admin-recon` skill 的「常见错误」。复跑：`node skills/admin-recon/scripts/verify-topology.mjs`。
