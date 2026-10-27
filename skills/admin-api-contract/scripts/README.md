@@ -6,9 +6,27 @@ Node 18+，无第三方依赖。路径相对仓库根目录。
 |---|---|
 | `extract-desired.mjs` | 从页面调用点抽 desired IR |
 | `build-gap.mjs` | desired 对照 OpenAPI JSON 或 actual IR，写 gap IR |
+| `check-contract.mjs` | 录制或现场响应对照 `response.fields`，打出可 grep 的不一致数 |
 | `../../scripts/generate-skeleton.mjs` | disposition 填完之后写映射骨架 |
 
-样例对拍见 `../fixtures/sample-app/README.md` 和 `../fixtures/thin-wrappers/README.md`。形状见 `../references/ir-schema.md`。
+样例对拍见 `../fixtures/sample-app/README.md`、`../fixtures/thin-wrappers/README.md` 和 `../fixtures/contract-check/README.md`。形状见 `../references/ir-schema.md`。
+
+## check-contract
+
+```bash
+node skills/admin-api-contract/scripts/check-contract.mjs \
+  --actual <actual.ir.json> \
+  --samples <录制目录> \
+  [--desired <desired.ir.json>] \
+  [--base http://127.0.0.1:8771] \
+  [--param <路径参数>]
+```
+
+同一方法 + 路径两边都有时用 actual 的 `response.fields`。只比响应 JSON 的顶层键：缺字段是 `CONTRACT_MISMATCH`，多余字段是 `CONTRACT_WARNING`（不计 mismatch）。`--base` 连不上或 HTTP 非 2xx 记 `CONTRACT_ERROR`，进程不崩，不把这次失败算进 `mismatch_count`。
+
+汇总行：`CONTRACT_SUMMARY mismatch_count=N warning_count=M checked=K error_count=E`。`mismatch_count>0` 或 `error_count>0` 时退出码 1。D1 的不一致数只取 `mismatch_count`，不取 gap 的 reshape 条数。
+
+样本文件名 `GET__api_insights.json`、`POST__api_insights_{param}_status.json`：第一个 `__` 后面的下划线还原成 `/`。路径段本身有下划线，或参数名里有下划线时，改用 JSONL：`{"method","path","body"?,"response"}`。
 
 ## 薄封装默认名单
 

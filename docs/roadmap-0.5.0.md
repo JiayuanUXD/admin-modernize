@@ -12,14 +12,14 @@
 
 现状偏流程文档；缺可重复执行的中间产物与生成步骤。
 
-IR、抽取 / 差距脚本、人工门禁和骨架生成已经落地。typed client 仍是骨架（`client.stub.mjs`），不是完整生成的类型化客户端。试点页切真接口后的不一致计数还没做，见下面未勾的验收项。
+IR、抽取 / 差距脚本、人工门禁、骨架生成和响应校验（`check-contract.mjs`）已经落地。typed client 仍是骨架（`client.stub.mjs`），不是完整生成的类型化客户端。不一致数从校验日志的 `CONTRACT_SUMMARY` 读取，不从 gap 的 reshape 条数读取。
 
 - [x] 定义 IR（JSON）：`desired-openapi`、`actual-capabilities`（带 `file:line`）、`gap-table`（match / reshape / missing）
 - [x] 增加脚本：从页面调用点 / 数据层 / mock 抽「期望契约」草稿（允许不全，人工补）
 - [x] 增加脚本或 skill 步骤：对照后端 OpenAPI / 代码，产出差距表
 - [x] 人工门禁：勾选每条缺口的处置（直连 / BFF 映射 / pending）
 - [x] 生成最小产物：映射层骨架 + typed client 入口 + `mock|real|pending` 配置表（typed client 为骨架，不是完整客户端）
-- [ ] 验收：试点页切真接口时，契约不一致数可从校验日志计数（对齐 D1）。洞察池试点确认这条还没有：见 `docs/pilots/dingdong-ux-radar-insights/d1-notes.md`
+- [x] 验收：试点页切真接口时，契约不一致数可从校验日志计数（对齐 D1）。洞察池 `samples/` 的汇总是 `mismatch_count=0`，`samples-bad/` 是 `mismatch_count=1`。见 `docs/pilots/dingdong-ux-radar-insights/d1-notes.md`
 
 ### 2. 编排 skill：默认 D4 = 原型先行（可覆盖）
 
@@ -35,8 +35,9 @@ README 已承认第二后台未跑过——这是最大风险。试点目录：`
 
 - [x] 选 1 个真实需求（列表+表单/抽屉，接口 3–8 个）— 洞察池列表 + 详情抽屉，6 个接口
 - [ ] 阶段 0→1 全跑通：摸底 → 最小约束面 → 离线预览 → 接测试环境 → 上线或可合并
-  - 本次只跑了契约流水线：副本上的 desired → 手写 actual IR → gap → `disposition: direct` → skeleton。没有改雷达 UI，没有最小约束面，没有离线预览，没有接测试环境。
-- [x] 记 D1 四项指标的现值和试点后值 — 见该目录 `d1-notes.md`。契约不一致数仍不能从校验日志计数，试点后写明未闭环
+  - [x] 已直连后台的「接测试环境」（整段 0→1 只半勾到这里）：未改雷达 UI。`check-contract` 对着洞察池 6 条录制/合成响应跑通；`--base` 留给已经起来的本地或测试服务，连不上记 `CONTRACT_ERROR`，不计入不一致数。`pilot-source/` 不是可启动的完整服务，本项不起雷达进程。
+  - [ ] 最小约束面、离线预览、上线或可合并。清单在试点 README，指向 `admin-guardrails` 和 `admin-preview-loop`。本次不跑浏览器。
+- [x] 记 D1 四项指标的现值和试点后值 — 见该目录 `d1-notes.md`。契约不一致数从 `CONTRACT_SUMMARY mismatch_count` 计数；6 条 gap `reshape` 不是这个数
 - [x] 把踩坑写回对应 skill 的「常见错误 / 红线」（改设施，不改那一页）— `admin-api-contract`：包装层抽取、无 OpenAPI 时用 actual IR、`set_status` 的 note 缺省语义
 
 ---

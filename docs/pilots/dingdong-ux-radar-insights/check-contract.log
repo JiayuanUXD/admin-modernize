@@ -1,0 +1,8 @@
+# 录制样本。期望退出码 0
+# node skills/admin-api-contract/scripts/check-contract.mjs --actual docs/pilots/dingdong-ux-radar-insights/actual.ir.json --samples docs/pilots/dingdong-ux-radar-insights/samples
+CONTRACT_SUMMARY mismatch_count=0 warning_count=0 checked=6 error_count=0
+
+# 坏样本。期望退出码 1。missing= 按字段名字母序
+# node skills/admin-api-contract/scripts/check-contract.mjs --actual docs/pilots/dingdong-ux-radar-insights/actual.ir.json --samples docs/pilots/dingdong-ux-radar-insights/samples-bad
+CONTRACT_MISMATCH op=listInsights method=GET path=/api/insights missing=items,total
+CONTRACT_SUMMARY mismatch_count=1 warning_count=0 checked=1 error_count=0

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "generatedAt": "2026-01-01T00:00:00.000Z",
+  "generator": "manual",
+  "operations": [
+    {
+      "id": "listOrders",
+      "method": "GET",
+      "path": "/api/orders",
+      "summary": "合成列表。给 check-contract 的好样本用",
+      "sources": [
+        { "file": "fixtures/contract-check/good/actual.ir.json", "lineStart": 1 }
+      ],
+      "response": { "fields": ["id", "status"] }
+    },
+    {
+      "id": "createOrder",
+      "method": "POST",
+      "path": "/api/orders",
+      "summary": "合成创建。响应只有 id",
+      "sources": [
+        { "file": "fixtures/contract-check/good/actual.ir.json", "lineStart": 1 }
+      ],
+      "response": { "fields": ["id"] }
+    }
+  ]
+}

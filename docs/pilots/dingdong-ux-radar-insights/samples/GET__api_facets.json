@@ -1,0 +1,19 @@
+{
+  "taxonomy_version": "2026-01",
+  "axes": {
+    "experience": [{ "value": "配送", "count": 3 }],
+    "category": [],
+    "sentiment": [],
+    "severity": [
+      { "value": "sev.p1", "count": 1 },
+      { "value": "__none__", "count": 0 }
+    ],
+    "persona": []
+  },
+  "owners": [{ "value": "待认领", "count": 1 }],
+  "statuses": [{ "value": "open", "count": 1 }],
+  "item_types": [{ "value": "post", "count": 1 }],
+  "trackers": [
+    { "value": "fulfillment", "label": "履约时效与超时", "owner": "履约", "count": 1 }
+  ]
+}

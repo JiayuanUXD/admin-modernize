@@ -39,6 +39,10 @@ description: Use when prototype or AI-generated admin pages must be connected to
 5. **生成骨架** — `../../scripts/generate-skeleton.mjs --gap <gap.ir.json> --out-dir <目录>`
    任一 `disposition` 为空则退出码 1，不写文件。`direct` / `bff` 写入 `mappers.mjs`；`pending` 写入 `pending-endpoints.json` 和 `pending.md`；`route-mode.json` 把操作标成 `real` 或 `pending`（`mock` 留给之后手改）。`client.stub.mjs` 只是 typed client 入口骨架，不是完整客户端。
 6. **接数据层** — 按 `references/data-layer-checklist.md` 把页面改到数据层上，对照骨架审字段。`exposure`（`rest` / `bff` / `mcp`）本切片不参与生成。
+7. **切真接口后跑校验** — `scripts/check-contract.mjs --actual <actual.ir.json> [--desired <desired.ir.json>] --samples <录制目录> [--base http://127.0.0.1:端口]`
+   对照 `response.fields` 的顶层键。同一方法 + 路径在 actual 和 desired 里都有时，整条用 actual。缺字段打 `CONTRACT_MISMATCH`，多余字段打 `CONTRACT_WARNING`（warning 不计 mismatch）。`--base` 拉失败打 `CONTRACT_ERROR`，脚本不崩，这次失败不进 mismatch。
+   最后一行是 `CONTRACT_SUMMARY mismatch_count=N warning_count=M checked=K error_count=E`。`mismatch_count>0` 或有 error 时退出码 1。样例在 `fixtures/contract-check/`。
+   **不一致数只读 `mismatch_count`。** gap 里的 `reshape` 只说明期望侧没抽出字段、实际侧有顶层键，不是 D1 的不一致数。
 
 ## mock 由契约生成并检查覆盖
 
@@ -49,6 +53,8 @@ description: Use when prototype or AI-generated admin pages must be connected to
 ## 开发态响应校验
 
 数据层在非生产环境用契约校验每个响应（zod、ajv 等），不一致时报错并指出字段。切到真接口那一刻，字段差异立刻暴露，而不是上线后。关键接口在 CI 里对测试环境跑契约测试。
+
+本仓库能直接跑的计数器是 `scripts/check-contract.mjs`（流水线第 7 步）。不一致数读它的 `CONTRACT_SUMMARY`，不要把 `build-gap` 的 reshape 条数当成这个数。
 
 校验尤其要抓外壳变化：新外壳没有旧的 `success` 字段时，照字面改字段名的页面会静默变成空表，没有任何报错。
 
@@ -98,3 +104,4 @@ description: Use when prototype or AI-generated admin pages must be connected to
 | 包装层内部是 `fetch(变量)`，按那个变量编一条接口 | 认不出 URL 就跳过。不编 |
 | 没 OpenAPI 就凭记忆补实际能力 | 每条要有 `file:line`。没有出处的能力不进差距表 |
 | 改状态时把没传的 `note` 写成 `""` | 缺省不等于清空。`set_status` 里 `None` 是不动备注 |
+| 把 gap 的 reshape 条数当成 D1 契约不一致数 | 不一致数只认 `check-contract` 的 `CONTRACT_SUMMARY mismatch_count`。reshape 是抽取缺口，不是校验日志 |
