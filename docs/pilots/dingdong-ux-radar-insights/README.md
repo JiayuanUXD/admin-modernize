@@ -1,12 +1,12 @@
 # 叮咚买菜 · 小红书体验雷达：洞察池试点
 
-在不改雷达业务仓的前提下，用对接面流水线跑通一条真实切片：期望抽取 → 实际能力 → 差距 → 人工处置 → 骨架。
+用对接面流水线跑通一条真实切片：期望抽取 → 实际能力 → 差距 → 人工处置 → 骨架。本目录的 `pilot-source/` 仍是接回前快照。业务仓的薄数据层接回记在「阶段 0→1」。
 
 ## 目标
 
 页面已经用 `get` / `post` / `api` 打到现网接口。这次要证明两件事：扩完抽取之后，这 6 个接口能从副本里抽出 desired，对照手写的 actual IR 得到 gap，填上 disposition 之后能生成骨架；切真接口之后，契约不一致数能从 `check-contract` 的校验日志读出来。
 
-不改雷达 UI，不把骨架接回页面。已直连后台的「接到测试环境」见「阶段 0→1」，不是再改一版界面。
+业务仓已用薄数据层接回，见「阶段 0→1」。已直连后台的「接到测试环境」仍是本仓库的校验器，不是再改一版界面。
 
 ## 切片
 
@@ -31,7 +31,7 @@ disposition 六条都是 `direct`。现网页面已经直接调用这些接口�
 
 ## 源码副本
 
-`pilot-source/` 是雷达仓的只读副本，不是业务仓，本试点不改它：
+`pilot-source/` 是雷达仓的只读副本，不是业务仓，本试点不改它。它仍是接回前的快照，与雷达分支 `feat/insights-thin-api` 有意不一致：副本里没有 `ui/insights-api.js`，`ui/app.js` 仍是直调 `get` / `post`。不要把这份快照当成已接回的页面。
 
 | 路径 | 来源 |
 |---|---|
@@ -134,18 +134,25 @@ CONTRACT_SUMMARY mismatch_count=1 warning_count=0 checked=1 error_count=0
 
 ## 阶段 0→1（已直连后台）
 
-页面早就在调这 6 个真接口。这一阶段的「接到测试环境」不是改 UI，也不是把 `skeleton/` 接回 `pilot-source/ui/app.js`：
+页面早就在调这 6 个真接口。这一阶段的「接到测试环境」不是改本目录的 UI，也不是把 `skeleton/` 拷进 `pilot-source/ui/app.js`：
 
 - 校验器在本仓库用 Node 跑通，对着 `samples/` 的录制/合成响应。
 - 真要打测试环境时，服务在雷达仓里起，再用 `--base`。本目录的 `pilot-source/` 只有 `ui/app.js`、`pipeline/api.py`、`pipeline/insights.py`，没有数据库和包入口，这里不起雷达进程。
 
-还没做的部分：
+内网仓 `dingdong-ux-radar` 分支 `feat/insights-thin-api`（用户本机已提交；尚未 push，也没有内网 GitLab MR）：
 
-| 项 | 状态 | 补法 |
+- 新增 `ui/insights-api.js`：`createInsightsApi(get, post)`。6 个方法名对齐本目录 `skeleton/client.stub.mjs`：`listFacets`、`listInsights`、`getInsight`、`createInsightsClaim`、`createInsightsNote`、`createInsightsStatus`。
+- `ui/app.js` 只改 facets / list / detail / claim / status / note 的调用点。bulk、flag、tag、severity、owner-loads 仍直接调 `get` / `post`。
+- `ui/index.html` 先加载 `insights-api.js`，再加载 `app.js`。
+- 雷达仓 `docs/admin-modernize-pilot/README.md` 有接回说明。
+- 没有把会 `throw` 的 ESM stub 原样放进页面。disposition 仍是 `direct`，行为与接回前一致。
+- 本插件仓不代为 push。何时 push、何时开 MR 由用户决定。
+
+| 项 | 状态 | 说明 |
 |---|---|---|
 | 最小约束面 | 未做 | `skills/admin-guardrails`。不在本试点里改页面 |
 | 离线预览 | 未做 | `skills/admin-preview-loop`：离线启动、固定种子、截图、生产包不含 mock、环境开关。本次不跑浏览器 |
-| 上线或可合并 | 未做 | 骨架停在 `skeleton/` |
+| 上线或可合并 | 已勾 | 可合并材料是雷达分支上的薄数据层（上面三个文件）加上本目录的契约与骨架。本机分支已提交。内网 GitLab MR 还没有，由用户决定何时 push |
 
 ## D1 前后
 

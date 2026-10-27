@@ -35,8 +35,9 @@ README 已承认第二后台未跑过——这是最大风险。试点目录：`
 
 - [x] 选 1 个真实需求（列表+表单/抽屉，接口 3–8 个）— 洞察池列表 + 详情抽屉，6 个接口
 - [ ] 阶段 0→1 全跑通：摸底 → 最小约束面 → 离线预览 → 接测试环境 → 上线或可合并
-  - [x] 已直连后台的「接测试环境」（整段 0→1 只半勾到这里）：未改雷达 UI。`check-contract` 对着洞察池 6 条录制/合成响应跑通；`--base` 留给已经起来的本地或测试服务，连不上记 `CONTRACT_ERROR`，不计入不一致数。`pilot-source/` 不是可启动的完整服务，本项不起雷达进程。
-  - [ ] 最小约束面、离线预览、上线或可合并。清单在试点 README，指向 `admin-guardrails` 和 `admin-preview-loop`。本次不跑浏览器。
+  - [x] 已直连后台的「接测试环境」（整段 0→1 只半勾到这里）：本插件仓未改雷达 UI。`check-contract` 对着洞察池 6 条录制/合成响应跑通；`--base` 留给已经起来的本地或测试服务，连不上记 `CONTRACT_ERROR`，不计入不一致数。`pilot-source/` 不是可启动的完整服务，本项不起雷达进程。
+  - [ ] 最小约束面、离线预览。清单在试点 README，指向 `admin-guardrails` 和 `admin-preview-loop`。本次不跑浏览器。
+  - [x] 上线或可合并。可合并材料是内网仓 `dingdong-ux-radar` 分支 `feat/insights-thin-api` 的薄数据层，加上本目录契约与骨架。`ui/insights-api.js` 的 `createInsightsApi(get, post)` 方法名对齐 `skeleton/client.stub.mjs`；`ui/app.js` 只改 facets / list / detail / claim / status / note；`ui/index.html` 先加载 `insights-api.js`。用户本机已提交。尚未 push，内网 GitLab MR 由用户决定何时开。未把会 throw 的 ESM stub 原样上线；disposition 仍是 `direct`，行为与接回前一致。`pilot-source/` 仍是接回前快照，与该分支有意不一致。最小约束面和离线预览仍未做，所以整段 0→1 不勾。
 - [x] 记 D1 四项指标的现值和试点后值 — 见该目录 `d1-notes.md`。契约不一致数从 `CONTRACT_SUMMARY mismatch_count` 计数；6 条 gap `reshape` 不是这个数
 - [x] 把踩坑写回对应 skill 的「常见错误 / 红线」（改设施，不改那一页）— `admin-api-contract`：包装层抽取、无 OpenAPI 时用 actual IR、`set_status` 的 note 缺省语义
 
