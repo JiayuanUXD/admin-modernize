@@ -1,0 +1,44 @@
+{
+  "openapi": "3.0.3",
+  "info": { "title": "orders-note", "version": "0.1.0" },
+  "paths": {
+    "/api/orders": {
+      "get": {
+        "operationId": "listOrders",
+        "parameters": [
+          { "name": "status", "in": "query", "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "订单列表" } }
+      }
+    },
+    "/api/orders/{id}": {
+      "get": {
+        "operationId": "getOrder",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "订单" } }
+      }
+    },
+    "/api/orders/{id}/note": {
+      "post": {
+        "operationId": "setOrderNote",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["note", "actor"],
+                "properties": {
+                  "note": { "type": "string" },
+                  "actor": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "备注已写入" } }
+      }
+    }
+  }
+}

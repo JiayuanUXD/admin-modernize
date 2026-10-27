@@ -1,0 +1,97 @@
+{
+  "openapi": "3.0.3",
+  "info": { "title": "feedback-items", "version": "0.1.0" },
+  "paths": {
+    "/api/items": {
+      "get": {
+        "operationId": "listItems",
+        "parameters": [
+          { "name": "q", "in": "query", "schema": { "type": "string" } },
+          { "name": "page_size", "in": "query", "schema": { "type": "integer" } }
+        ],
+        "responses": { "200": { "description": "列表" } }
+      }
+    },
+    "/api/facets": {
+      "get": {
+        "operationId": "listFacets",
+        "responses": { "200": { "description": "筛选计数" } }
+      }
+    },
+    "/api/items/{id}": {
+      "get": {
+        "operationId": "getItem",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "详情" } }
+      }
+    },
+    "/api/items/{id}/claim": {
+      "post": {
+        "operationId": "claimItem",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["owner", "actor"],
+                "properties": {
+                  "owner": { "type": "string" },
+                  "actor": { "type": "string" },
+                  "note": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "已认领" } }
+      }
+    },
+    "/api/items/{id}/status": {
+      "post": {
+        "operationId": "setItemStatus",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["status_id", "actor"],
+                "properties": {
+                  "status_id": { "type": "string" },
+                  "actor": { "type": "string" },
+                  "note": { "type": "string", "description": "省略表示不修改原备注；空串表示清空" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "状态已更新" } }
+      }
+    },
+    "/api/items/{id}/note": {
+      "post": {
+        "operationId": "setItemNote",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["note", "actor"],
+                "properties": {
+                  "note": { "type": "string" },
+                  "actor": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "备注已写入" } }
+      }
+    }
+  }
+}

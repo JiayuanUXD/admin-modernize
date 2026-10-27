@@ -1,0 +1,5 @@
+{
+  "name": "synthetic-api",
+  "private": true,
+  "type": "module"
+}

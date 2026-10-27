@@ -99,13 +99,14 @@ description: Use when prototype or AI-generated admin pages must be connected to
 - 无打包的页面仓直接放进 `client.stub.mjs`。骨架是 ESM。`index.html` 按顺序加载脚本的仓库收不了 `export`。接回用同目录的普通脚本。
 - 把 stub 里的 `throw new Error('stub client: … 未接数据层')` 当成实现。它只占方法名。上线前要换成真正的数据层调用。
 - 薄层另起方法名，或另起一套请求。方法名对齐 `client.stub.mjs` 的 `operations`，请求仍走页面已有的 `get` / `post`，才对得上骨架。洞察池这一例是 `createInsightsApi(get, post)`，见 `docs/pilots/dingdong-ux-radar-insights/lessons.md`。
+- 凭记忆补一条接口，`sources` 留空或行号写 0。`build-gap` 退出码 2，不创建 gap 文件。复跑 `node skills/admin-api-contract/scripts/assert-gap-sources.mjs`。
 
 ## 红线
 
 | 念头 | 现实 |
 |---|---|
 | 包装层内部是 `fetch(变量)`，按那个变量编一条接口 | 认不出 URL 就跳过。不编 |
-| 没 OpenAPI 就凭记忆补实际能力 | 每条要有 `file:line`。没有出处的能力不进差距表 |
+| 没 OpenAPI 就凭记忆补实际能力 | 期望和实际都要有 `file:line`。`build-gap` 见不到完整 `sources` 就退出码 2，不写 gap-table |
 | 改状态时把没传的 `note` 写成 `""` | 缺省不等于清空。`set_status` 里 `None` 是不动备注 |
 | 把 gap 的 reshape 条数当成 D1 契约不一致数 | 不一致数只认 `check-contract` 的 `CONTRACT_SUMMARY mismatch_count`。reshape 是抽取缺口，不是校验日志 |
 | 把 `client.stub.mjs` 原样丢进无打包页面 | ESM stub 上不了 `index.html` 顺序加载的页面。薄层挂现有 `get` / `post`，方法名对齐骨架；会 throw 的 stub 不是实现 |

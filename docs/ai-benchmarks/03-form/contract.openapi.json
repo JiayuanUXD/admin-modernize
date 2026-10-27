@@ -1,0 +1,41 @@
+{
+  "openapi": "3.0.3",
+  "info": { "title": "registrations", "version": "0.1.0" },
+  "paths": {
+    "/api/meta": {
+      "get": {
+        "operationId": "getMeta",
+        "responses": { "200": { "description": "枚举，含 kind 的可选取值" } }
+      }
+    },
+    "/api/registrations": {
+      "post": {
+        "operationId": "createRegistration",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["title", "kind", "actor"],
+                "properties": {
+                  "title": { "type": "string" },
+                  "kind": { "type": "string" },
+                  "actor": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "已创建，返回 id" } }
+      }
+    },
+    "/api/registrations/{id}": {
+      "get": {
+        "operationId": "getRegistration",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "登记详情" } }
+      }
+    }
+  }
+}

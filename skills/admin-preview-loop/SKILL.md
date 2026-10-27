@@ -122,6 +122,8 @@ node skills/admin-preview-loop/scripts/check-prod-bundle.mjs --self-test
 
 已登记的接口响应带 `X-Preview-Mock: 1`。没登记的 `/api/*` 返回 501，不带这个头。截图命令把「`/api/` 且没有这个头」记成未被 mock。501 而不是非标准状态码：Chrome 会把不认识的状态码挂住，截图就等不到网络空闲。
 
+无 skill 对照写在 `baseline-noskill.md`。方法是人工清单，对照的是同一条列表加抽屉：整套设施，以及只有 `fixtures/preview-app/` 三个页面文件。没有另开不带 skill 的 agent。
+
 ## 常见错误
 
 - mock 只有一页数据，分页、空态没覆盖。

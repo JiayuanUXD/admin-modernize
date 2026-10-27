@@ -103,6 +103,36 @@ git subtree split -P apps/web -b web-split
 |---|---|
 | 契约唯一来源；逻辑拆（目录 + CODEOWNERS + 独立 CI job）；两侧能独立构建 | 物理拆；跨仓契约测试；发布顺序自动化；原仓只读与回滚演练 |
 
+## 合成演练
+
+`fixtures/synthetic-monorepo/` 里前后端同目录，三个拆仓信号一条都没有，所以演练停在仓内隔离，不进物理拆。`git filter-repo` 只在临时克隆上跑，跑完即删。
+
+```bash
+node skills/admin-repo-split/scripts/drill-split.mjs
+```
+
+脚本拷到临时目录后做 3 笔提交：搭上契约和两侧目录；只改 `apps/web/src/types.js`；只改 `services/api/src/server.js`。再克隆一份，在克隆上执行：
+
+```bash
+python3 -m git_filter_repo \
+  --path apps/web \
+  --path contracts \
+  --path CODEOWNERS \
+  --path .github
+```
+
+2026-10-27 的输出：`commits_before=3`，`commits_after=2`，`services/api` 文件数为 0，`apps/web/check.mjs` 和 `contracts/openapi.json` 还在。只改后端的那笔被丢掉。临时目录里的原件不动。
+
+本环境的命令是 `python3 -m git_filter_repo`（包 2.47.0）。`git filter-repo` 这个可执行文件不在默认 PATH 上时，不要把它写成已经跑通。模块缺失时脚本失败退出。只抽一个子目录的等价做法是在克隆上 `git subtree split -P apps/web -b web-split`，这一轮没有用它。
+
+| 逻辑拆清单 | 合成仓上的结果 |
+|---|---|
+| 契约只有一个来源 | 通过。只有 `contracts/openapi.json`，`apps/web/src/types.js` 写明由它生成 |
+| 两侧离开对方源码仍能检查 | 通过。`apps/web` 与 `services/api` 分别拷走再 `node check.mjs` |
+| CI 里各有检查命令 | 通过。workflow 两个 job |
+| CODEOWNERS 覆盖两侧目录 | 通过。owner 是占位名 `@web-owner`、`@api-owner`，不是真人 |
+| 跨仓契约测试、原仓只读、分支保护 | 不做。默认仓内隔离，这些是物理拆之后的事 |
+
 ## 常见错误
 
 - 没有契约就拆，拆完两边字段对不上，联调比拆之前更久。

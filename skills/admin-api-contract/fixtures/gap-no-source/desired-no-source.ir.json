@@ -1,0 +1,17 @@
+{
+  "version": "1",
+  "generatedAt": "2026-01-01T00:00:00.000Z",
+  "generator": "manual",
+  "operations": [
+    {
+      "id": "listGuess",
+      "method": "GET",
+      "path": "/api/guess",
+      "summary": "凭记忆补的接口",
+      "request": { "query": {}, "body": null },
+      "response": { "fields": [] },
+      "sources": [],
+      "confidence": "low"
+    }
+  ]
+}

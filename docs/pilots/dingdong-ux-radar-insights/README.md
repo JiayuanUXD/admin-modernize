@@ -58,6 +58,7 @@ disposition 六条都是 `direct`。现网页面已经直接调用这些接口�
 | `check-contract.log` | 上面两组的校验日志 |
 | `lessons.md` | 踩坑 |
 | `d1-notes.md` | D1 四项的试点前 / 后 |
+| `recon-capabilities.md` | `capabilities.mjs` 对 `pilot-source/` 的出处盘点。71 条是调用点，同一接口多处调用会多行 |
 
 ## 复跑
 
@@ -67,6 +68,10 @@ disposition 六条都是 `direct`。现网页面已经直接调用这些接口�
 node skills/admin-api-contract/scripts/extract-desired.mjs \
   --root docs/pilots/dingdong-ux-radar-insights/pilot-source \
   --out docs/pilots/dingdong-ux-radar-insights/desired.full.ir.json
+
+node skills/admin-recon/scripts/capabilities.mjs \
+  --root docs/pilots/dingdong-ux-radar-insights/pilot-source \
+  --check docs/pilots/dingdong-ux-radar-insights/recon-capabilities.json
 ```
 
 收窄时只保留这 6 个方法 + 路径，操作对象原样留下：

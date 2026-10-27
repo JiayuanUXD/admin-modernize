@@ -5,7 +5,8 @@ Node 18+，无第三方依赖。路径相对仓库根目录。
 | 脚本 | 作用 |
 |---|---|
 | `extract-desired.mjs` | 从页面调用点抽 desired IR |
-| `build-gap.mjs` | desired 对照 OpenAPI JSON 或 actual IR，写 gap IR |
+| `build-gap.mjs` | desired 对照 OpenAPI JSON 或 actual IR，写 gap IR。没有 sources 的操作直接拒绝 |
+| `assert-gap-sources.mjs` | 断言无出处的期望或实际进不了 gap-table |
 | `check-contract.mjs` | 录制或现场响应对照 `response.fields`，打出可 grep 的不一致数 |
 | `../../scripts/generate-skeleton.mjs` | disposition 填完之后写映射骨架 |
 

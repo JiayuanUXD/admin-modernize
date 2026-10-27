@@ -160,6 +160,9 @@ const readWorkspace = (root, pkg) => {
 const detectTopo = (root) => {
   const files = quickWalk(root, 6);
   const rel = (abs) => relative(root, abs).split(sep).join('/');
+  // 样例树不参与形态判定，和「fixtures 下的 package.json 不算子包」同一条边界。
+  const evidenceFile = (abs) => !/(^|\/)(fixtures?|examples?|testdata|demos?|__tests__)(\/|$)/.test(rel(abs));
+  const signalFiles = files.filter(evidenceFile);
   const pkg = readJson(join(root, 'package.json')) || {};
   const deps = { ...pkg.dependencies, ...pkg.devDependencies, ...pkg.peerDependencies };
   const evidence = [];
@@ -183,16 +186,16 @@ const detectTopo = (root) => {
 
   // 前端
   const frameworks = [...new Set(Object.entries(KNOWN.框架).filter(([d]) => deps[d]).map(([, label]) => label))];
-  const feFiles = files.filter((f) => /\.(tsx|jsx|vue|svelte|astro)$/.test(f)).length;
+  const feFiles = signalFiles.filter((f) => /\.(tsx|jsx|vue|svelte|astro)$/.test(f)).length;
   const hasFE = frameworks.length > 0 || feFiles > 0;
   if (frameworks.length) evidence.push(['前端框架', frameworks.join('、')]);
   else if (feFiles) evidence.push(['前端信号', `${feFiles} 个组件/页面文件`]);
 
   // 后端
-  const buildFiles = files.filter((f) => BE_BUILD.has(basename(f)));
+  const buildFiles = signalFiles.filter((f) => BE_BUILD.has(basename(f)));
   const serverLibs = Object.keys(BE_DEPS).filter((d) => deps[d]);
-  const beCode = files.filter((f) => BE_CODE.has(extname(f).slice(1).toLowerCase()));
-  const scriptCode = files.filter((f) => SCRIPT_CODE.has(extname(f).slice(1).toLowerCase()));
+  const beCode = signalFiles.filter((f) => BE_CODE.has(extname(f).slice(1).toLowerCase()));
+  const scriptCode = signalFiles.filter((f) => SCRIPT_CODE.has(extname(f).slice(1).toLowerCase()));
   const hasBE = buildFiles.length > 0 || serverLibs.length > 0 || beCode.length >= 5;
   if (buildFiles.length) evidence.push(['后端构建文件', `${buildFiles.length} 个：${buildFiles.slice(0, 3).map(rel).join('、')}`]);
   if (serverLibs.length) evidence.push(['后端框架依赖', serverLibs.map((d) => BE_DEPS[d]).join('、')]);
@@ -200,7 +203,7 @@ const detectTopo = (root) => {
   if (scriptCode.length >= 5 && !hasBE) evidence.push(['脚本信号', `py/rb/php ${scriptCode.length} 个文件（不等于后端，未计入）`]);
 
   // 页面在不在服务端模板里
-  const tpl = files.filter((f) => SERVER_TPL.has(extname(f).slice(1).toLowerCase()));
+  const tpl = signalFiles.filter((f) => SERVER_TPL.has(extname(f).slice(1).toLowerCase()));
   flags.serverTemplates = tpl.length;
   if (tpl.length) evidence.push(['服务端模板', `${tpl.length} 个（${[...new Set(tpl.map((f) => extname(f).slice(1).toLowerCase()))].join('、')}）`]);
 
@@ -208,7 +211,7 @@ const detectTopo = (root) => {
   const mf = [...new Set(Object.entries(KNOWN.微前端).filter(([d]) => deps[d]).map(([, label]) => label))];
   flags.microFrontend = mf.length > 0;
   if (mf.length) evidence.push(['微前端', mf.join('、')]);
-  const contracts = files.filter((f) => /(openapi|swagger)[^/]*\.(ya?ml|json)$/i.test(basename(f)) || /\.(proto|graphql|gql)$/i.test(f));
+  const contracts = signalFiles.filter((f) => /(openapi|swagger)[^/]*\.(ya?ml|json)$/i.test(basename(f)) || /\.(proto|graphql|gql)$/i.test(f));
   if (contracts.length) evidence.push(['契约产物', `${contracts.length} 个：${contracts.slice(0, 4).map(rel).join('、')}`]);
 
   const containers = childGitRepos(root);
