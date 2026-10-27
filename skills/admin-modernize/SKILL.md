@@ -39,6 +39,12 @@ description: Use when planning or running an effort to make an existing back-off
 
 拓扑先判：`admin-recon --topology` 判定前后端是否同仓。**同仓时阶段 1 之前先走 `admin-repo-split`**（契约冻结 → 逻辑拆 → 物理拆）。拆仓不替代分支保护和目录白名单，见该 skill 的红线。
 
+## 已落地的试点
+
+当前真实切片是叮咚买菜 · 小红书体验雷达的洞察池（列表 + 抽屉，6 个接口），记录在插件根目录 `docs/pilots/dingdong-ux-radar-insights/`。D4 在这一例上覆盖了默认：没有 OpenAPI，但后端实现已经成熟，所以用 actual IR 走后端先行，不另起一份原型契约。
+
+这次只跑通契约流水线（desired → gap → disposition → 骨架），并把踩坑写回了 `admin-api-contract`。没有改雷达页面，没有离线预览，没有接到测试环境。D1 笔记在该目录的 `d1-notes.md`。阶段 0→1 还没全跑通。
+
 ## 决策点（逐项问用户，不替用户选）
 
 除 D4 外逐项问，不替用户选。D4 有默认，只在仓库里已经有成熟 OpenAPI 时问一次。

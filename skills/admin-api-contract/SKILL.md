@@ -31,8 +31,8 @@ description: Use when prototype or AI-generated admin pages must be connected to
 下面的脚本路径相对本 skill 目录。样例和大致条数在 `fixtures/sample-app/README.md`。
 
 1. **抽期望** — `scripts/extract-desired.mjs --root <原型目录> [--out desired.ir.json]`
-   扫描 axios / fetch / `$.ajax` 调用点，写出 desired IR。字面量 URL 的置信度是 `medium`，模板 URL 是 `low`。没有出处的接口不会写进去。允许不全，人工补。
-2. **拿实际** — 后端 OpenAPI JSON，或已经整理好的 actual IR。本切片不解析 YAML；OpenAPI 用 JSON（样例是 `fixtures/sample-app/actual.openapi.json`）。
+   扫描 axios / fetch / `$.ajax`，以及薄封装 `get` / `post` / `api`（默认名单和怎么扩展见 `scripts/README.md`）。字面量 URL 的置信度是 `medium`，模板或拼接是 `low`。认不出 URL 的调用跳过，不编接口。没有出处的接口不会写进去。允许不全，人工补。
+2. **拿实际** — 后端 OpenAPI JSON，或已经整理好的 actual IR。没有 OpenAPI、但路由和实现已经写在代码里时，不要另编一份 OpenAPI：按代码写 actual IR，每条带 `sources`（`file` + `lineStart`）。本切片不解析 YAML；OpenAPI 用 JSON（样例是 `fixtures/sample-app/actual.openapi.json`）。真实切片见 `docs/pilots/dingdong-ux-radar-insights/`。
 3. **比差距** — `scripts/build-gap.mjs --desired <desired.ir.json> --actual <openapi.json|actual.ir.json> [--out gap.ir.json]`
    按方法 + 规范化路径对齐。`match` 是响应字段集合相同，`reshape` 是路径相同但字段不同，`missing` 是期望有而实际没有。`disposition` 先空着。实际多出来的接口不进这张表。
 4. **人工门禁** — 给每条差距填 `disposition`：`direct`（直连）、`bff`（适配层映射）、`pending`（后端还没有）。空着不能往下走。
@@ -87,3 +87,14 @@ description: Use when prototype or AI-generated admin pages must be connected to
 - 忽略分页、排序、筛选参数的约定，每页自己决定。
 - 金额用浮点数。财务类系统传字符串小数或最小单位整数，展示层再格式化。
 - 日期时区不约定，跨时区展示错一天。
+- 只扫 axios / fetch。页面若是 `get(url)` / `post(url, body)` / `api('GET', url)`，内部 `fetch(path)` 的 path 是变量，会抽到 0 条。先对上薄封装名单，再判断页面有没有调接口。
+- 没有 OpenAPI 就手写第二份 OpenAPI，和代码各维护一份。后端已经写在路由和实现里时，用 actual IR，出处指到文件和行。叮咚体验雷达洞察池这一例见 `docs/pilots/dingdong-ux-radar-insights/`。
+- 把 `set_status` 的 `note` 缺省当成空串。缺省是不动原来的备注，传空串才是清空。抽取只能看见有的调用点传了 `note`，看不见这层差别，不要在适配层补一个空备注。
+
+## 红线
+
+| 念头 | 现实 |
+|---|---|
+| 包装层内部是 `fetch(变量)`，按那个变量编一条接口 | 认不出 URL 就跳过。不编 |
+| 没 OpenAPI 就凭记忆补实际能力 | 每条要有 `file:line`。没有出处的能力不进差距表 |
+| 改状态时把没传的 `note` 写成 `""` | 缺省不等于清空。`set_status` 里 `None` 是不动备注 |
