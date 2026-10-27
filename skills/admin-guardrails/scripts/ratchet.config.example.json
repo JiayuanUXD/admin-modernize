@@ -1,0 +1,35 @@
+{
+  "baseline": "ratchet-baseline.json",
+  "rules": [
+    {
+      "id": "color-hex",
+      "message": "硬编码色值 → 用主题 token / CSS 变量",
+      "globs": ["src/**/*.{css,scss,less,vue,tsx,jsx}"],
+      "ignore": ["src/styles/tokens.*", "src/**/*.d.ts"],
+      "pattern": "(?<![&\\w])#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3,4})\\b",
+      "exclude": "url\\(|href=",
+      "stripComments": "line"
+    },
+    {
+      "id": "inline-style",
+      "message": "行内 style → class",
+      "globs": ["src/**/*.{vue,tsx,jsx,html}"],
+      "pattern": "style\\s*=\\s*(\\{\\{|[\"'])|:style\\s*=",
+      "stripComments": "line"
+    },
+    {
+      "id": "important",
+      "message": "!important → 调整选择器优先级或使用 token",
+      "globs": ["src/**/*.{css,scss,less,vue}"],
+      "pattern": "!important",
+      "stripComments": "line"
+    },
+    {
+      "id": "direct-request",
+      "message": "页面里直接发请求 → 走统一数据层",
+      "globs": ["src/{pages,views}/**/*.{vue,tsx,jsx,ts,js}"],
+      "pattern": "\\baxios\\b|(^|[^\\w.])fetch\\(|\\$\\.ajax\\(",
+      "stripComments": "line"
+    }
+  ]
+}

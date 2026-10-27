@@ -1,0 +1,83 @@
+{
+  "baseline": "ratchet-baseline.json",
+  "rules": [
+    {
+      "id": "S1",
+      "message": "硬编码十六进制色值 → 用主题变量",
+      "globs": ["src/{pages,component}/**/*.{tsx,scss,css}"],
+      "pattern": "#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3,4})\\b",
+      "exclude": "url\\(|href=",
+      "stripComments": "line",
+      "allow": "style-token"
+    },
+    {
+      "id": "S2",
+      "message": "字号不在 12/14/16/18/20/24px 刻度上",
+      "globs": ["src/{pages,component}/**/*.{tsx,scss,css}"],
+      "pattern": "font-?size['\"]?\\s*[:=]\\s*\\{?\\s*['\"]?(?!(?:12|14|16|18|20|24)(?!\\d))\\d+",
+      "flags": "i",
+      "stripComments": "line",
+      "allow": "style-token"
+    },
+    {
+      "id": "S3",
+      "message": "行内 style 写视觉属性 → className + scss",
+      "globs": ["src/{pages,component}/**/*.tsx"],
+      "pattern": "(?:^\\s*|style=\\{\\{[^}]*?\\b)(color|fontSize|backgroundColor|background|border(?:Top|Right|Bottom|Left)?(?:Color)?)\\s*:",
+      "stripComments": "line",
+      "allow": "style-token"
+    },
+    {
+      "id": "S4",
+      "message": "rgb()/rgba()/hsl() 色值 → 用主题变量，半透明用 color-mix 或变量的透明度档",
+      "globs": ["src/{pages,component}/**/*.{tsx,scss,css}"],
+      "pattern": "\\b(?:rgba?|hsla?)\\(\\s*\\d",
+      "exclude": "url\\(|href=",
+      "stripComments": "line",
+      "allow": "style-token"
+    },
+    {
+      "id": "O1",
+      "message": "页面 scss 覆盖 .ant-drawer/.ant-modal → 用统一浮层组件",
+      "globs": ["src/pages/**/*.{scss,css}"],
+      "pattern": "\\.(ant-drawer|ant-modal|dd-design-drawer|dd-design-modal)(?![\\w])",
+      "stripComments": "line",
+      "allow": "overlay"
+    },
+    {
+      "id": "O2",
+      "message": "页面直接写 <Drawer>/<Modal> → 用统一浮层组件",
+      "globs": ["src/pages/**/*.tsx"],
+      "pattern": "<(Drawer|Modal)(\\s|>|$)",
+      "stripComments": "line",
+      "allow": "overlay"
+    },
+    {
+      "id": "L1",
+      "message": "页面样式覆盖搜索区 / 表格卡外壳选择器",
+      "globs": ["src/**/*.{scss,css,less}"],
+      "ignore": ["src/common/css/search-form.scss", "src/common/css/table_render.scss", "src/.lib/**"],
+      "pattern": "\\.(fr-search|fr-column-search|fr-form|fr-field-visibility|search-action-col|search-action-column|search-action-fixed|tr-table-wrapper|tr-toolbar|tr-toolbar-left|tr-toolbar-right)(?![\\w-])",
+      "count": "match",
+      "stripComments": "text"
+    },
+    {
+      "id": "C1",
+      "message": "className=\"tip-text\" → 用 NameCode",
+      "globs": ["src/**/*.{ts,tsx}"],
+      "ignore": ["src/component/DDForm/**", "src/.lib/**"],
+      "pattern": "className\\s*=\\s*\\{?\\s*['\"`][^'\"`]*\\btip-text\\b",
+      "count": "match",
+      "stripComments": "text"
+    },
+    {
+      "id": "C4",
+      "message": "手写 title:'操作' → 用 actionColumn()",
+      "globs": ["src/**/*.{ts,tsx}"],
+      "ignore": ["src/component/TableActions/**", "src/pages/demo/**"],
+      "pattern": "title\\s*:\\s*['\"`]操作['\"`]",
+      "count": "match",
+      "stripComments": "text"
+    }
+  ]
+}
