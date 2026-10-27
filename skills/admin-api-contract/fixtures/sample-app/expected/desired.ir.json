@@ -1,0 +1,116 @@
+{
+  "version": "1",
+  "generatedAt": "2026-01-01T00:00:00.000Z",
+  "generator": "extract-desired",
+  "operations": [
+    {
+      "id": "listOrders",
+      "method": "GET",
+      "path": "/api/orders",
+      "summary": "",
+      "request": {
+        "query": {
+          "status": {}
+        },
+        "body": null
+      },
+      "response": {
+        "fields": [
+          "id",
+          "status"
+        ]
+      },
+      "sources": [
+        {
+          "file": "src/pages/orders/index.tsx",
+          "lineStart": 4,
+          "symbol": "listOrders"
+        },
+        {
+          "file": "src/services/orders-api.js",
+          "lineStart": 11,
+          "symbol": "listOrdersViaFetch"
+        }
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "createOrder",
+      "method": "POST",
+      "path": "/api/orders",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": {
+          "note": {},
+          "qty": {},
+          "sku": {}
+        }
+      },
+      "response": {
+        "fields": [
+          "id",
+          "note",
+          "status"
+        ]
+      },
+      "sources": [
+        {
+          "file": "src/pages/orders/index.tsx",
+          "lineStart": 12,
+          "lineEnd": 16,
+          "symbol": "createOrder"
+        }
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "getOrder",
+      "method": "GET",
+      "path": "/api/orders/{id}",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": [
+          "id",
+          "status"
+        ]
+      },
+      "sources": [
+        {
+          "file": "src/pages/orders/index.tsx",
+          "lineStart": 25,
+          "symbol": "loadOrder"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "listOrdersStats",
+      "method": "GET",
+      "path": "/api/orders/stats",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": [
+          "count"
+        ]
+      },
+      "sources": [
+        {
+          "file": "src/services/orders-api.js",
+          "lineStart": 2,
+          "lineEnd": 5,
+          "symbol": "orderStats"
+        }
+      ],
+      "confidence": "medium"
+    }
+  ]
+}

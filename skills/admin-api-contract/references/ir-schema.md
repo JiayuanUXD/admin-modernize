@@ -1,0 +1,124 @@
+# 契约 IR
+
+对接面的中间表示是三份 JSON。页面、mock、OpenAPI 都先落到这里，再生成骨架。不在页面里手写第二份契约。
+
+JSON Schema（draft-07）在 `../schemas/`：
+
+| 文件 | Schema |
+|---|---|
+| `desired-openapi.ir.json` | `schemas/desired.schema.json` |
+| `actual-capabilities.ir.json` | `schemas/actual.schema.json` |
+| `gap-table.ir.json` | `schemas/gap.schema.json` |
+
+三份文档的顶层都是 `version: "1"`、`generatedAt`（ISO-8601）、`generator`。
+
+## desired-openapi
+
+原型需要的操作。`generator` 通常是 `extract-desired`。
+
+```json
+{
+  "version": "1",
+  "generatedAt": "ISO-8601",
+  "generator": "extract-desired",
+  "operations": [
+    {
+      "id": "listOrders",
+      "method": "GET",
+      "path": "/api/orders",
+      "summary": "",
+      "request": { "query": {}, "body": null },
+      "response": { "fields": ["id", "status"] },
+      "sources": [{ "file": "src/pages/orders/index.tsx", "lineStart": 42 }],
+      "confidence": "medium"
+    }
+  ]
+}
+```
+
+- `confidence`：`high | medium | low`。脚本对字面量 URL 写 `medium`，对模板 URL 写 `low`。`high` 只留给人工改过的条目，脚本不写。
+- `sources` 至少一条。`file` 相对扫描根目录，`lineStart` 从 1 起。跨行调用可带 `lineEnd`。能认出外层函数时带 `symbol`。
+- 没有出处的接口不许写入。变量拼出来、脚本认不出 URL 的调用直接跳过，不编一条。
+
+## actual-capabilities
+
+后端已经有的操作。`generator` 是 `from-openapi` 或 `manual`。
+
+```json
+{
+  "version": "1",
+  "generatedAt": "ISO-8601",
+  "generator": "from-openapi",
+  "operations": [
+    {
+      "id": "listOrders",
+      "method": "GET",
+      "path": "/api/orders",
+      "sources": [{ "file": "openapi.yaml", "lineStart": 10 }],
+      "response": { "fields": ["id", "status", "createdAt"] }
+    }
+  ]
+}
+```
+
+从代码或 OpenAPI 抽出时同样必须带 `sources`。`build-gap` 读 OpenAPI JSON 时在内存里做成这种形状，不另写文件；OpenAPI 的 `operationId` 优先，没有才按路径推导。
+
+本切片不解析 YAML。OpenAPI 用 JSON；样例里的 `actual.openapi.yaml` 只给人看。
+
+## gap-table
+
+期望驱动的对照结果。`generator` 是 `build-gap`。实际有、期望没有的接口不进这张表。
+
+```json
+{
+  "version": "1",
+  "generatedAt": "ISO-8601",
+  "generator": "build-gap",
+  "items": [
+    {
+      "desiredId": "listOrders",
+      "actualId": "listOrders",
+      "method": "GET",
+      "path": "/api/orders",
+      "status": "reshape",
+      "notes": "响应字段不一致；实际有而期望无：createdAt",
+      "disposition": null,
+      "exposure": null
+    }
+  ]
+}
+```
+
+对齐键是 **方法 + 规范化路径**（大写方法、前导 `/`、去掉查询串和多余斜杠，`:id` 与 `${id}` 都写成 `{id}`）。
+
+| status | 含义 |
+|---|---|
+| `match` | 方法、路径相同，响应字段集合相同 |
+| `reshape` | 方法、路径相同，响应字段集合不同 |
+| `missing` | 期望有，实际没有。`actualId` 为 `null` |
+
+字段集合只比 `response.fields`，忽略顺序。请求体差异写在期望 IR 里，不单独改 status。
+
+`disposition` 一开始必须是 `null`。人工门禁之后才填：
+
+| disposition | 含义 |
+|---|---|
+| `direct` | 直连，映射层原样透过 |
+| `bff` | 在适配层改名、补字段 |
+| `pending` | 后端还没有，页面不能假装成功 |
+
+`generate-skeleton` 见到 `null` 或空字符串会以退出码 1 拒绝。
+
+`exposure`：`rest | bff | mcp`。Schema 里留了这个字段，本切片的脚本不读它，生成时保持 `null`。
+
+## 脚本怎么规范化
+
+`extract-desired` 与 `build-gap` 用同一套路径和 id 规则，样例的期望输出按这个对齐。
+
+路径：去掉域名和查询串，补前导 `/`，合并重复斜杠，去掉末尾 `/`。模板 `${id}` 和 `:id` 都写成 `{id}`。查询键进 `request.query`，不进路径。
+
+`id`：去掉 `api` / `v1` / `v2` / `v3` 段。GET 集合是 `list` + 资源名，GET 单项（末段是参数）是 `get` + 单数资源名，POST 是 `create`，PUT / PATCH 是 `update`，DELETE 是 `delete`。只对末段资源做简单英文单数；`status`、`stats`、`address` 等不再砍 `s`。同一轮里 id 撞了，后一条加 `_2`。OpenAPI 有 `operationId` 时 actual 侧用它，不重新推导。
+
+响应字段：调用点之后有限几行里的 `res.data.<字段>`、`res.data.list.map(row => row.<字段>)`、`.then(data => data.<字段>)`，以及调用行上的 `response: a, b` 注释。字面量对象的键当作请求体。认不出的 URL 跳过。同一方法 + 路径的多次调用合并成一条，字段取并集，只要有一次是模板 URL，置信度就是 `low`。
+
+`generatedAt` 是写出时的当前时间。和样例对拍时忽略它。

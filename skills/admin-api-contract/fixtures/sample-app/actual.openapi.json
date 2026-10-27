@@ -1,0 +1,70 @@
+{
+  "openapi": "3.0.3",
+  "info": { "title": "sample-orders", "version": "1.0.0" },
+  "paths": {
+    "/api/orders": {
+      "get": {
+        "operationId": "listOrders",
+        "responses": {
+          "200": {
+            "description": "orders",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": { "type": "string" },
+                      "status": { "type": "string" },
+                      "createdAt": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createOrder",
+        "responses": {
+          "201": {
+            "description": "created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "status": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/orders/stats": {
+      "get": {
+        "operationId": "listOrdersStats",
+        "responses": {
+          "200": {
+            "description": "stats",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "count": { "type": "integer" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
