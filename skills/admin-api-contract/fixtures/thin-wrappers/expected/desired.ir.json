@@ -1,0 +1,166 @@
+{
+  "version": "1",
+  "generatedAt": "2026-01-01T00:00:00.000Z",
+  "generator": "extract-desired",
+  "operations": [
+    {
+      "id": "listFacets",
+      "method": "GET",
+      "path": "/api/facets",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "src/insights-client.js",
+          "lineStart": 17,
+          "symbol": "loadFacets"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "listInsights",
+      "method": "GET",
+      "path": "/api/insights",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "src/insights-client.js",
+          "lineStart": 13,
+          "symbol": "loadInsights"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "createInsightsNote",
+      "method": "POST",
+      "path": "/api/insights/{id}/note",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": {
+          "actor": {},
+          "note": {}
+        }
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "src/insights-client.js",
+          "lineStart": 34,
+          "symbol": "setInsightNote"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "createInsightsStatus",
+      "method": "POST",
+      "path": "/api/insights/{id}/status",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": {
+          "actor": {},
+          "status_id": {}
+        }
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "src/insights-client.js",
+          "lineStart": 30,
+          "symbol": "setInsightStatus"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "getInsight",
+      "method": "GET",
+      "path": "/api/insights/{param}",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "src/insights-client.js",
+          "lineStart": 21,
+          "symbol": "loadInsight"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "createInsightsClaim",
+      "method": "POST",
+      "path": "/api/insights/{param}/claim",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": {
+          "actor": {},
+          "note": {},
+          "owner": {}
+        }
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "src/insights-client.js",
+          "lineStart": 26,
+          "symbol": "claimInsight"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "createSamplesReview",
+      "method": "POST",
+      "path": "/api/samples/{param}/review",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": {
+          "verdict": {}
+        }
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "src/insights-client.js",
+          "lineStart": 38,
+          "symbol": "reviewSample"
+        }
+      ],
+      "confidence": "low"
+    }
+  ]
+}

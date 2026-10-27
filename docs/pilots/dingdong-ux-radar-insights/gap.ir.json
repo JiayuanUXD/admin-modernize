@@ -1,0 +1,67 @@
+{
+  "version": "1",
+  "generatedAt": "2026-10-27T07:15:35.369Z",
+  "generator": "build-gap",
+  "items": [
+    {
+      "desiredId": "listFacets",
+      "actualId": "listFacets",
+      "method": "GET",
+      "path": "/api/facets",
+      "status": "reshape",
+      "notes": "响应字段不一致；实际有而期望无：axes, item_types, owners, statuses, taxonomy_version, trackers",
+      "disposition": "direct",
+      "exposure": null
+    },
+    {
+      "desiredId": "listInsights",
+      "actualId": "listInsights",
+      "method": "GET",
+      "path": "/api/insights",
+      "status": "reshape",
+      "notes": "响应字段不一致；实际有而期望无：filters, items, page, page_size, pages, taxonomy_version, total",
+      "disposition": "direct",
+      "exposure": null
+    },
+    {
+      "desiredId": "getInsight",
+      "actualId": "getInsight",
+      "method": "GET",
+      "path": "/api/insights/{param}",
+      "status": "reshape",
+      "notes": "响应字段不一致；实际有而期望无：context, events, has_state, insight_id, item_id, item_type, keyword, like_count, manual_tags, muted, note, owner, post_id, severity, similar, source, starred, status, status_id, tags, text, time, title, trackers, ts, updated_at, updated_by, url",
+      "disposition": "direct",
+      "exposure": null
+    },
+    {
+      "desiredId": "createInsightsClaim",
+      "actualId": "claimInsight",
+      "method": "POST",
+      "path": "/api/insights/{param}/claim",
+      "status": "reshape",
+      "notes": "响应字段不一致；实际有而期望无：insight_id, owner, was",
+      "disposition": "direct",
+      "exposure": null
+    },
+    {
+      "desiredId": "createInsightsNote",
+      "actualId": "setInsightNote",
+      "method": "POST",
+      "path": "/api/insights/{param}/note",
+      "status": "reshape",
+      "notes": "响应字段不一致；实际有而期望无：insight_id, note",
+      "disposition": "direct",
+      "exposure": null
+    },
+    {
+      "desiredId": "createInsightsStatus",
+      "actualId": "setInsightStatus",
+      "method": "POST",
+      "path": "/api/insights/{param}/status",
+      "status": "reshape",
+      "notes": "响应字段不一致；实际有而期望无：insight_id, note_touched, status_id, was",
+      "disposition": "direct",
+      "exposure": null
+    }
+  ]
+}

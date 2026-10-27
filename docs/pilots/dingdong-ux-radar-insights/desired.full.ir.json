@@ -1,0 +1,1228 @@
+{
+  "version": "1",
+  "generatedAt": "2026-10-27T07:15:35.316Z",
+  "generator": "extract-desired",
+  "operations": [
+    {
+      "id": "listArchive",
+      "method": "GET",
+      "path": "/api/archive",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 6726,
+          "symbol": "loadArchive"
+        }
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "listArchiveSummary",
+      "method": "GET",
+      "path": "/api/archive/summary",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 2900,
+          "symbol": "loadWbBadge"
+        }
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "getArchiveWeekly",
+      "method": "GET",
+      "path": "/api/archive/weekly/{param}",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 6959,
+          "symbol": "loadWeekly"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "listBoard",
+      "method": "GET",
+      "path": "/api/board",
+      "summary": "",
+      "request": {
+        "query": {
+          "include_empty": {}
+        },
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 815,
+          "symbol": "cmdkSearchRemote"
+        },
+        {
+          "file": "ui/app.js",
+          "lineStart": 2456,
+          "symbol": "loadBoard"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "getBoard",
+      "method": "GET",
+      "path": "/api/board/{param}",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 2709,
+          "symbol": "openCard"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "createBoardStatus",
+      "method": "POST",
+      "path": "/api/board/{param}/status",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": {
+          "actor": {},
+          "status_id": {}
+        }
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 2692,
+          "lineEnd": 2693,
+          "symbol": "doThemeStatus"
+        },
+        {
+          "file": "ui/app.js",
+          "lineStart": 2822,
+          "symbol": "save"
+        },
+        {
+          "file": "ui/app.js",
+          "lineStart": 3327,
+          "lineEnd": 3328,
+          "symbol": "wbThemeStatus"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "listBoardMeta",
+      "method": "GET",
+      "path": "/api/board/meta",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 2457,
+          "symbol": "loadBoard"
+        }
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "listDashboard",
+      "method": "GET",
+      "path": "/api/dashboard",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 4975,
+          "symbol": "loadDashboard"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "createExportPosts.csv",
+      "method": "POST",
+      "path": "/api/export/posts.csv",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": {
+          "ids": {}
+        }
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 1678,
+          "symbol": "exportPosts"
+        }
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "listFacets",
+      "method": "GET",
+      "path": "/api/facets",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 1323,
+          "symbol": "loadInsights"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "listHealth",
+      "method": "GET",
+      "path": "/api/health",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 477,
+          "symbol": "boot"
+        }
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "listInsights",
+      "method": "GET",
+      "path": "/api/insights",
+      "summary": "",
+      "request": {
+        "query": {
+          "page_size": {},
+          "q": {}
+        },
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 814,
+          "symbol": "cmdkSearchRemote"
+        },
+        {
+          "file": "ui/app.js",
+          "lineStart": 1322,
+          "symbol": "loadInsights"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "getInsight",
+      "method": "GET",
+      "path": "/api/insights/{param}",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 2166,
+          "symbol": "openDetail"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "createInsightsClaim",
+      "method": "POST",
+      "path": "/api/insights/{param}/claim",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": {
+          "actor": {},
+          "note": {},
+          "owner": {}
+        }
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 1513,
+          "symbol": "ownerMenuSpec"
+        },
+        {
+          "file": "ui/app.js",
+          "lineStart": 1526,
+          "symbol": "unclaimOne"
+        },
+        {
+          "file": "ui/app.js",
+          "lineStart": 2001,
+          "lineEnd": 2002,
+          "symbol": "asgGo"
+        },
+        {
+          "file": "ui/app.js",
+          "lineStart": 2295,
+          "symbol": "claimTo"
+        },
+        {
+          "file": "ui/app.js",
+          "lineStart": 3301,
+          "symbol": "wbClaim"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "createInsightsFlag",
+      "method": "POST",
+      "path": "/api/insights/{param}/flag",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": {
+          "actor": {},
+          "flag": {},
+          "value": {}
+        }
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 1536,
+          "symbol": "flagAct"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "createInsightsNote",
+      "method": "POST",
+      "path": "/api/insights/{param}/note",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": {
+          "actor": {},
+          "note": {}
+        }
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 2318,
+          "lineEnd": 2319,
+          "symbol": "claimTo"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "createInsightsSeverity",
+      "method": "POST",
+      "path": "/api/insights/{param}/severity",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": {
+          "actor": {},
+          "value": {}
+        }
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 1585,
+          "symbol": "sevLabel"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "createInsightsStatus",
+      "method": "POST",
+      "path": "/api/insights/{param}/status",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": {
+          "actor": {},
+          "note": {},
+          "status_id": {}
+        }
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 1559,
+          "symbol": "stMenuSpec"
+        },
+        {
+          "file": "ui/app.js",
+          "lineStart": 2311,
+          "lineEnd": 2312,
+          "symbol": "claimTo"
+        },
+        {
+          "file": "ui/app.js",
+          "lineStart": 2327,
+          "lineEnd": 2328,
+          "symbol": "claimTo"
+        },
+        {
+          "file": "ui/app.js",
+          "lineStart": 3311,
+          "symbol": "wbSetStatus"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "createInsightsTag",
+      "method": "POST",
+      "path": "/api/insights/{param}/tag",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": {
+          "actor": {},
+          "axis": {},
+          "op": {},
+          "value": {}
+        }
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 2336,
+          "lineEnd": 2338,
+          "symbol": "claimTo"
+        },
+        {
+          "file": "ui/app.js",
+          "lineStart": 2347,
+          "lineEnd": 2348,
+          "symbol": "claimTo"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "createInsightsBulk",
+      "method": "POST",
+      "path": "/api/insights/bulk",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": {
+          "action": {},
+          "actor": {},
+          "ids": {},
+          "note": {},
+          "owner": {}
+        }
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 1869,
+          "symbol": "doBulk"
+        },
+        {
+          "file": "ui/app.js",
+          "lineStart": 2011,
+          "lineEnd": 2012,
+          "symbol": "asgGo"
+        },
+        {
+          "file": "ui/app.js",
+          "lineStart": 3256,
+          "symbol": "wbBulkClaim"
+        }
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "listInsightsOwnerLoads",
+      "method": "GET",
+      "path": "/api/insights/owner-loads",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 1915,
+          "symbol": "openAssign"
+        }
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "listJobs",
+      "method": "GET",
+      "path": "/api/jobs",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 3436,
+          "symbol": "startOpsJobPoll"
+        }
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "createJob",
+      "method": "POST",
+      "path": "/api/jobs",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": {
+          "actor": {},
+          "kind": {},
+          "params": {}
+        }
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 3563,
+          "symbol": "runOpsJob"
+        },
+        {
+          "file": "ui/app.js",
+          "lineStart": 5811,
+          "symbol": "cfgRunAction"
+        }
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "getJob",
+      "method": "GET",
+      "path": "/api/jobs/{param}",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 3587,
+          "symbol": "toggleJobLog"
+        },
+        {
+          "file": "ui/app.js",
+          "lineStart": 5830,
+          "symbol": "cfgPollJob"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "listMeta",
+      "method": "GET",
+      "path": "/api/meta",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 476,
+          "symbol": "boot"
+        }
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "listNorthStar",
+      "method": "GET",
+      "path": "/api/north-star",
+      "summary": "",
+      "request": {
+        "query": {
+          "weeks": {}
+        },
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 477,
+          "symbol": "boot"
+        },
+        {
+          "file": "ui/app.js",
+          "lineStart": 2040,
+          "symbol": "refreshCounters"
+        }
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "listOps",
+      "method": "GET",
+      "path": "/api/ops",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 3357,
+          "symbol": "loadOps"
+        }
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "listOpsSummary",
+      "method": "GET",
+      "path": "/api/ops/summary",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 2898,
+          "symbol": "loadWbBadge"
+        }
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "createRollbackApply",
+      "method": "POST",
+      "path": "/api/rollback/apply",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": {
+          "batch_id": {},
+          "confirm": {}
+        }
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 4012,
+          "lineEnd": 4013,
+          "symbol": "rbApply"
+        }
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "listRollbackPreview",
+      "method": "GET",
+      "path": "/api/rollback/preview",
+      "summary": "",
+      "request": {
+        "query": {
+          "batch": {}
+        },
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 3991,
+          "symbol": "pickBatch"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "createSamplesReview",
+      "method": "POST",
+      "path": "/api/samples/{param}/review",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 4286,
+          "lineEnd": 4287,
+          "symbol": "postSampleReview"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "createSamplesDraw",
+      "method": "POST",
+      "path": "/api/samples/draw",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": {
+          "force": {},
+          "n": {}
+        }
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 4238,
+          "symbol": "drawSamples"
+        }
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "listSettings",
+      "method": "GET",
+      "path": "/api/settings",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 5301,
+          "symbol": "loadConfig"
+        }
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "listSettingsDiff",
+      "method": "GET",
+      "path": "/api/settings/diff",
+      "summary": "",
+      "request": {
+        "query": {
+          "from": {},
+          "to": {}
+        },
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 6012,
+          "lineEnd": 6013,
+          "symbol": "loadCfgDiff"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "getSettingsEdit",
+      "method": "GET",
+      "path": "/api/settings/edit/{param}",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 6078,
+          "symbol": "loadCfgEditor"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "updateSettingsEdit",
+      "method": "PUT",
+      "path": "/api/settings/edit/{param}",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": {
+          "base_fingerprint": {},
+          "doc": {}
+        }
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 6492,
+          "symbol": "cfgEditSave"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "createSettingsPreview",
+      "method": "POST",
+      "path": "/api/settings/preview",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": {
+          "doc": {},
+          "kind": {}
+        }
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 6464,
+          "symbol": "cfgEditPreview"
+        }
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "listSettingsSummary",
+      "method": "GET",
+      "path": "/api/settings/summary",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 2899,
+          "symbol": "loadWbBadge"
+        }
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "listSettingsTest",
+      "method": "GET",
+      "path": "/api/settings/test",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 5986,
+          "symbol": "runCfgTest"
+        },
+        {
+          "file": "ui/app.js",
+          "lineStart": 6590,
+          "symbol": "cfgEdTestTracker"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "listSummary",
+      "method": "GET",
+      "path": "/api/summary",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 476,
+          "symbol": "boot"
+        },
+        {
+          "file": "ui/app.js",
+          "lineStart": 2040,
+          "symbol": "refreshCounters"
+        }
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "listTrackers",
+      "method": "GET",
+      "path": "/api/trackers",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 4379,
+          "symbol": "loadTrackers"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "createTrackersStatus",
+      "method": "POST",
+      "path": "/api/trackers/{param}/status",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": {
+          "actor": {},
+          "status_id": {}
+        }
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 4714,
+          "lineEnd": 4715,
+          "symbol": "doTrackerStatus"
+        },
+        {
+          "file": "ui/app.js",
+          "lineStart": 4909,
+          "symbol": "save"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "listTrackersMeta",
+      "method": "GET",
+      "path": "/api/trackers/meta",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 4380,
+          "symbol": "loadTrackers"
+        }
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "listViews",
+      "method": "GET",
+      "path": "/api/views",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 476,
+          "symbol": "boot"
+        },
+        {
+          "file": "ui/app.js",
+          "lineStart": 1267,
+          "symbol": "saveView"
+        },
+        {
+          "file": "ui/app.js",
+          "lineStart": 1290,
+          "symbol": "delView"
+        }
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "createView",
+      "method": "POST",
+      "path": "/api/views",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 1266,
+          "symbol": "saveView"
+        }
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "deleteView",
+      "method": "DELETE",
+      "path": "/api/views/{param}",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 1289,
+          "symbol": "delView"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "getView",
+      "method": "GET",
+      "path": "/api/views/{param}",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 1232,
+          "symbol": "applyView"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "listWorkbench",
+      "method": "GET",
+      "path": "/api/workbench",
+      "summary": "",
+      "request": {
+        "query": {
+          "actor": {}
+        },
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 2874,
+          "symbol": "loadWorkbench"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "listWorkbenchSummary",
+      "method": "GET",
+      "path": "/api/workbench/summary",
+      "summary": "",
+      "request": {
+        "query": {
+          "actor": {}
+        },
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 2897,
+          "symbol": "loadWbBadge"
+        }
+      ],
+      "confidence": "low"
+    }
+  ]
+}

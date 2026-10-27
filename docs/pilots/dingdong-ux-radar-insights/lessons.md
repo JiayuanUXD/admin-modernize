@@ -1,0 +1,43 @@
+# 踩坑
+
+改的是抽取脚本和这篇记录，不是雷达那一页。
+
+## 包装层
+
+`ui/app.js` 的请求几乎都是 `get(path)` / `post(path, body)` / `api(method, path, body)`。真正的 `fetch(path)` 在包装函数里，`path` 是参数。只认 `axios` / `fetch` / `$.ajax` 时，对这个目录抽出来是 0 条。
+
+默认名单是 `get` / `delete`、`post` / `put` / `patch`、`api(方法字面量, url, body?)`。同形态的别名加进 `THIN_CALLS` 或 `THIN_API`。业务函数名不要写进名单。
+
+URL 还认「以路径字面量开头的拼接」。`'/api/insights/' + encodeURIComponent(id)` 收成 `/api/insights/{param}`。`` `/api/insights/${encodeURIComponent(id)}/claim` `` 同样是 `{param}`，因为插值不是裸标识符。不把 `{param}` 改写成 `{id}`。
+
+下面几种跳过，不编接口：
+
+- `fetch(path)`、`get(path)`、`api('GET', path)` 这种整段变量
+- `api(method, url)` 的方法不是字符串字面量
+- 拼接里夹了三元表达式。追踪项详情是 `'/api/trackers/' + encodeURIComponent(id) + (version ? '?version=' + … : '')`。看不清后半段是路径还是查询串，整段跳过。它不在这 6 条里，全文对照里也没有一条编出来的 `/api/trackers/{id}`
+
+主列表是 `get('/api/insights?' + p.toString())`，筛选键在 `URLSearchParams` 里，抽不到。命令面板那次写成了 `'/api/insights?q=' + … + '&page_size=6'`，所以合并后的 query 只有 `q` 和 `page_size`。没有按 `api.py` 头注释把筛选参数补进 desired。
+
+请求体只收对象字面量的键。`{ note: $('#dnote').value, actor }` 的键是 `note` 和 `actor`，不是 `value`。
+
+响应字段仍只认 `res.data.<字段>` 这一路。这个页面是 `const d = await get(...)` 然后直接读 `d`，所以 6 条 desired 的 `response.fields` 都是空的。
+
+`sources.symbol` 取调用点前面最近的函数。备注保存写在 `drawDrawer` 里、`const claimTo = …` 之后的点击监听器上，symbol 会落成 `claimTo`。对行号以 `file` + `lineStart` 为准。
+
+## 没有 OpenAPI
+
+`api.py` 开头的注释是接口一览，不是可解析的契约。本切片不编一份 OpenAPI 来凑 `build-gap`。
+
+actual IR 手写，`generator` 是 `manual`。每条至少一处路由（`api.py` 的 `dispatch` / `_command`）和一处实现（`insights.py` 的 `list_insights` / `facets` / `get_insight` / `claim` / `set_status` / `set_note`）。行号指 `pilot-source/` 这份副本。
+
+`response.fields` 写的是该接口返回 JSON 的顶层键，不是列表元素内部的字段。
+
+## status / note
+
+`insights.set_status` 把 `note is None` 和 `note == ""` 分开：没传备注就不动原来的备注，传空串才清空。`api.py` 用 `body.get("note")`，不用 `body.get("note", "")`。
+
+页面上两处改状态故意不带 `note`（列表菜单、抽屉里的状态下拉），标「不处理」那次才带 `note`。抽取把这些调用并成一条，请求体里看得到 `note`，但看不出「缺省」和「空串」不是一回事。
+
+`set_note` 不是这套语义：它总是写入 `note`。`claim` 的 `note` 缺省走空串，再收成「没有备注」，也和 `set_status` 不同。适配层不能把三种缺省收成一种。
+
+差距表的 `status` 六条都是 `reshape`，因为期望侧字段为空、实际侧有顶层键。`disposition` 仍填 `direct`：页面已经在调这些接口，不是缺后端，也不该为了字段没抽出来就生成一层 BFF。

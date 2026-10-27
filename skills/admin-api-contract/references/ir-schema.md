@@ -119,6 +119,18 @@ JSON Schema（draft-07）在 `../schemas/`：
 
 `id`：去掉 `api` / `v1` / `v2` / `v3` 段。GET 集合是 `list` + 资源名，GET 单项（末段是参数）是 `get` + 单数资源名，POST 是 `create`，PUT / PATCH 是 `update`，DELETE 是 `delete`。只对末段资源做简单英文单数；`status`、`stats`、`address` 等不再砍 `s`。同一轮里 id 撞了，后一条加 `_2`。OpenAPI 有 `operationId` 时 actual 侧用它，不重新推导。
 
-响应字段：调用点之后有限几行里的 `res.data.<字段>`、`res.data.list.map(row => row.<字段>)`、`.then(data => data.<字段>)`，以及调用行上的 `response: a, b` 注释。字面量对象的键当作请求体。认不出的 URL 跳过。同一方法 + 路径的多次调用合并成一条，字段取并集，只要有一次是模板 URL，置信度就是 `low`。
+响应字段：调用点之后有限几行里的 `res.data.<字段>`、`res.data.list.map(row => row.<字段>)`、`.then(data => data.<字段>)`，以及调用行上的 `response: a, b` 注释。字面量对象的键当作请求体。直接 `const row = await get(...)` 再读 `row.id` 的写法目前收不到字段。认不出的 URL 跳过。同一方法 + 路径的多次调用合并成一条，字段取并集，只要有一次是模板或拼接，置信度就是 `low`。
+
+薄封装默认名单在 `scripts/extract-desired.mjs` 的 `THIN_CALLS` / `THIN_API`，说明见 `scripts/README.md`：
+
+| 形态 | 调用 | 方法 |
+|---|---|---|
+| 无请求体 | `get(url)` / `delete(url)` | GET / DELETE |
+| 第二参是请求体 | `post(url, body)` / `put` / `patch` | POST / PUT / PATCH |
+| 方法字面量 | `api('METHOD', url, body?)` | METHOD 必须是字符串字面量 |
+
+axios / fetch / `$.ajax` 仍按原来的规则。同形态的别名加进名单；参数位置不同要改扫描分支，不要靠猜 URL，也不要把业务函数名写进名单。
+
+URL 除了字符串和模板，还认以路径字面量开头的 `+` 拼接。静态片段保留，其余动态片段收成 `{param}`。`${encodeURIComponent(id)}` 这种不是裸标识符的插值同样收成 `{param}`，不猜成 `{id}`。下面三种直接跳过，不编接口：整段都是变量；`api` 的方法不是字符串字面量；拼接里夹了三元表达式（看不清后面是路径还是查询串）。
 
 `generatedAt` 是写出时的当前时间。和样例对拍时忽略它。

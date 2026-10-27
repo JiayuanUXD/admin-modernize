@@ -1,0 +1,191 @@
+{
+  "version": "1",
+  "generatedAt": "2026-10-27T07:15:35.316Z",
+  "generator": "extract-desired",
+  "operations": [
+    {
+      "id": "listFacets",
+      "method": "GET",
+      "path": "/api/facets",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 1323,
+          "symbol": "loadInsights"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "listInsights",
+      "method": "GET",
+      "path": "/api/insights",
+      "summary": "",
+      "request": {
+        "query": {
+          "page_size": {},
+          "q": {}
+        },
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 814,
+          "symbol": "cmdkSearchRemote"
+        },
+        {
+          "file": "ui/app.js",
+          "lineStart": 1322,
+          "symbol": "loadInsights"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "getInsight",
+      "method": "GET",
+      "path": "/api/insights/{param}",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": null
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 2166,
+          "symbol": "openDetail"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "createInsightsClaim",
+      "method": "POST",
+      "path": "/api/insights/{param}/claim",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": {
+          "actor": {},
+          "note": {},
+          "owner": {}
+        }
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 1513,
+          "symbol": "ownerMenuSpec"
+        },
+        {
+          "file": "ui/app.js",
+          "lineStart": 1526,
+          "symbol": "unclaimOne"
+        },
+        {
+          "file": "ui/app.js",
+          "lineStart": 2001,
+          "lineEnd": 2002,
+          "symbol": "asgGo"
+        },
+        {
+          "file": "ui/app.js",
+          "lineStart": 2295,
+          "symbol": "claimTo"
+        },
+        {
+          "file": "ui/app.js",
+          "lineStart": 3301,
+          "symbol": "wbClaim"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "createInsightsNote",
+      "method": "POST",
+      "path": "/api/insights/{param}/note",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": {
+          "actor": {},
+          "note": {}
+        }
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 2318,
+          "lineEnd": 2319,
+          "symbol": "claimTo"
+        }
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "createInsightsStatus",
+      "method": "POST",
+      "path": "/api/insights/{param}/status",
+      "summary": "",
+      "request": {
+        "query": {},
+        "body": {
+          "actor": {},
+          "note": {},
+          "status_id": {}
+        }
+      },
+      "response": {
+        "fields": []
+      },
+      "sources": [
+        {
+          "file": "ui/app.js",
+          "lineStart": 1559,
+          "symbol": "stMenuSpec"
+        },
+        {
+          "file": "ui/app.js",
+          "lineStart": 2311,
+          "lineEnd": 2312,
+          "symbol": "claimTo"
+        },
+        {
+          "file": "ui/app.js",
+          "lineStart": 2327,
+          "lineEnd": 2328,
+          "symbol": "claimTo"
+        },
+        {
+          "file": "ui/app.js",
+          "lineStart": 3311,
+          "symbol": "wbSetStatus"
+        }
+      ],
+      "confidence": "low"
+    }
+  ]
+}

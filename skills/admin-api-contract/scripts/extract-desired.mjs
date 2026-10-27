@@ -2,9 +2,11 @@
 /**
  * extract-desired：从页面调用点抽出期望契约草稿（Node 18+，无依赖）。
  *
- * 只认 axios / fetch / $.ajax 的调用，并且 URL 必须是字符串或模板字符串。
- * 认不出 URL 的调用直接跳过，不编接口。每条操作都带 file:line。
- * 字面量 URL 的 confidence 是 medium，模板 URL 是 low。high 留给人工。
+ * 认 axios / fetch / $.ajax，以及薄封装 get / delete、post / put / patch、
+ * api(方法字面量, url, body?)。URL 必须是字符串、模板字符串，或以路径字面量开头的拼接。
+ * 认不出 URL 的调用直接跳过，不编接口。拼接里夹了三元表达式时也整段跳过。
+ * 每条操作都带 file:line。
+ * 字面量 URL 的 confidence 是 medium，模板或拼接是 low。high 留给人工。
  *
  * 用法
  *   node extract-desired.mjs --root <目录> [--out desired.ir.json]
@@ -18,7 +20,8 @@ const USAGE = [
   '  node extract-desired.mjs --root <目录> [--out desired.ir.json]',
   '',
   '递归扫描 .js/.jsx/.ts/.tsx/.vue（跳过 node_modules、dist、build、.git）。',
-  '抽出 axios / fetch / $.ajax 的方法与 URL 字面量，写成 desired IR。',
+  '抽出 axios / fetch / $.ajax，以及薄封装 get/post/api（名单见 THIN_CALLS / THIN_API）。',
+  'URL 认字符串、模板，以及以路径字面量开头的拼接。认不出的调用跳过，不编接口。',
 ].join('\n');
 
 const die = (msg) => { console.error(`✘ ${msg}`); process.exit(2); };
@@ -46,6 +49,20 @@ const OUT = resolve(out);
 const CODE_EXT = new Set(['.js', '.jsx', '.ts', '.tsx', '.vue']);
 const SKIP_DIRS = new Set(['node_modules', 'dist', 'build', '.git']);
 const METHODS = new Set(['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS']);
+// 薄封装默认名单。同形态的别名加在这里：键是调用名，值是 HTTP 方法。
+// get(url) / delete(url) 没有请求体；post/put/patch 的第二参是请求体。
+// api 形单独一条：api('GET'|…, url, body?)，方法必须是字符串字面量。
+// 参数位置不同的新形态要在 scanFile 里加分支，不要靠猜 URL。
+const THIN_CALLS = {
+  get: 'GET',
+  delete: 'DELETE',
+  post: 'POST',
+  put: 'PUT',
+  patch: 'PATCH',
+};
+const THIN_API = ['api'];
+const THIN_BODY_METHODS = new Set(['POST', 'PUT', 'PATCH']);
+const THIN_ALT = [...Object.keys(THIN_CALLS), ...THIN_API].join('|');
 const WRAP = new Set(['list', 'items', 'records', 'rows', 'result', 'payload', 'data']);
 const SKIP_FIELD = new Set(['map', 'filter', 'forEach', 'then', 'catch', 'json', 'length', 'push', 'concat', 'toString', 'finally']);
 const KEEP_SINGULAR = new Set(['status', 'address', 'business', 'series', 'species', 'news', 'stats']);
@@ -162,8 +179,22 @@ function readValue(s, i) {
     const end = balancedEnd(s, i) + 1;
     return { raw: s.slice(start, end), end };
   }
+  // 调用和属性访问要整段吃掉。停在第一个 ) 会把 `$('#dnote').value` 拆成假字段 value。
   let j = i;
-  while (j < s.length && !/[\s,}\])]/.test(s[j])) j++;
+  let depth = 0;
+  while (j < s.length) {
+    const ch = s[j];
+    if (ch === '"' || ch === "'" || ch === '`') { j = readString(s, j).end; continue; }
+    if (ch === '(' || ch === '[' || ch === '{') { depth++; j++; continue; }
+    if (ch === ')' || ch === ']' || ch === '}') {
+      if (depth === 0) break;
+      depth--;
+      j++;
+      continue;
+    }
+    if (depth === 0 && /[\s,]/.test(ch)) break;
+    j++;
+  }
   return { raw: s.slice(start, j), end: j };
 }
 
@@ -211,18 +242,94 @@ function unescapeJs(s) {
   return s.replace(/\\(['"\\nrt/])/g, (_, c) => ({ "'": "'", '"': '"', '\\': '\\', n: '\n', r: '\r', t: '\t', '/': '/' }[c]));
 }
 
+function unwrapParens(s) {
+  let t = String(s).trim();
+  while (t.startsWith('(') && t.endsWith(')')) {
+    if (balancedEnd(t, 0) !== t.length - 1) break;
+    t = t.slice(1, -1).trim();
+  }
+  return t;
+}
+
+function splitTopLevelPlus(s) {
+  const parts = [];
+  let depth = 0;
+  let start = 0;
+  let i = 0;
+  while (i < s.length) {
+    const c = s[i];
+    if (c === '"' || c === "'" || c === '`') { i = readString(s, i).end; continue; }
+    if (c === '(' || c === '{' || c === '[') { depth++; i++; continue; }
+    if (c === ')' || c === '}' || c === ']') { depth = Math.max(0, depth - 1); i++; continue; }
+    if (c === '+' && depth === 0) {
+      parts.push(s.slice(start, i).trim());
+      start = i + 1;
+    }
+    i++;
+  }
+  parts.push(s.slice(start).trim());
+  return parts.filter((part) => part.length > 0);
+}
+
+function looksLikePath(value) {
+  const v = String(value).trim();
+  return v.startsWith('/') || /^[a-z][a-z0-9+.-]*:\/\//i.test(v);
+}
+
+function hasTopLevelTernary(s) {
+  let depth = 0;
+  let i = 0;
+  while (i < s.length) {
+    const c = s[i];
+    if (c === '"' || c === "'" || c === '`') { i = readString(s, i).end; continue; }
+    if (c === '(' || c === '[' || c === '{') { depth++; i++; continue; }
+    if (c === ')' || c === ']' || c === '}') { depth = Math.max(0, depth - 1); i++; continue; }
+    if (depth === 0 && (c === '?' || c === ':')) return true;
+    i++;
+  }
+  return false;
+}
+
+// 拼进路径的动态片段必须是「整段换成一个参数」的表达式。
+// 三元表达式会把查询串或空串粘进路径，认不出就整段放弃，不编一条。
+function isOpaquePathSegment(part) {
+  const s = unwrapParens(part);
+  if (!s) return false;
+  return !hasTopLevelTernary(s);
+}
+
 function parseUrl(raw) {
   if (raw == null) return null;
-  let s = String(raw).trim();
-  if (s.startsWith('(') && s.endsWith(')')) return parseUrl(s.slice(1, -1));
-  if ((s.startsWith("'") && s.endsWith("'")) || (s.startsWith('"') && s.endsWith('"'))) {
-    return { template: false, value: unescapeJs(s.slice(1, -1)) };
+  const s = unwrapParens(raw);
+  if (!s) return null;
+  if (s[0] === '"' || s[0] === "'" || s[0] === '`') {
+    const end = readString(s, 0).end;
+    if (end === s.length) {
+      if (s[0] === '`') {
+        const value = s.slice(1, -1);
+        return { template: value.includes('${'), value };
+      }
+      return { template: false, value: unescapeJs(s.slice(1, -1)) };
+    }
   }
-  if (s.startsWith('`') && s.endsWith('`')) {
-    const value = s.slice(1, -1);
-    return { template: value.includes('${'), value };
+  const parts = splitTopLevelPlus(s);
+  if (parts.length < 2) return null;
+  const head = parseUrl(parts[0]);
+  if (!head || !looksLikePath(head.value)) return null;
+  let value = head.value;
+  let template = head.template;
+  for (const part of parts.slice(1)) {
+    const lit = parseUrl(part);
+    if (lit) {
+      value += lit.value;
+      if (lit.template) template = true;
+      continue;
+    }
+    if (!isOpaquePathSegment(part)) return null;
+    value += '${param}';
+    template = true;
   }
-  return null;
+  return { template, value };
 }
 
 function normalizePath(raw) {
@@ -426,7 +533,7 @@ function scanFile(abs) {
   const comments = commentRanges(text);
   const rel = relative(ROOT, abs).split(sep).join('/');
   const found = [];
-  const re = /axios\s*\.\s*(get|post|put|patch|delete|head|options)|axios|fetch|\$\s*\.\s*ajax|\$\s*\.\s*(get|post)/g;
+  const re = new RegExp(`axios\\s*\\.\\s*(get|post|put|patch|delete|head|options)|axios|fetch|\\$\\s*\\.\\s*ajax|\\$\\s*\\.\\s*(get|post)|(?<![\\w$.])(?:${THIN_ALT})`, 'g');
   let m;
   while ((m = re.exec(text))) {
     if (inRanges(comments, m.index)) continue;
@@ -478,6 +585,14 @@ function scanFile(abs) {
       const data = entries.find(([k]) => k === 'data');
       body = data ? data[1] : null;
       config = call.args[0];
+    } else if (Object.prototype.hasOwnProperty.call(THIN_CALLS, kind)) {
+      method = THIN_CALLS[kind];
+      url = parseUrl(call.args[0]);
+      if (THIN_BODY_METHODS.has(method)) body = call.args[1] || null;
+    } else if (THIN_API.includes(kind)) {
+      method = quotedMethod(call.args[0]);
+      url = call.args.length > 1 ? parseUrl(call.args[1]) : null;
+      if (method && THIN_BODY_METHODS.has(method)) body = call.args[2] || null;
     }
     if (!method || !url) continue;
     const norm = normalizePath(url.value);

@@ -1,0 +1,13 @@
+{
+  "version": "1",
+  "generatedAt": "2026-10-27T07:15:35.417Z",
+  "generator": "generate-skeleton",
+  "modes": {
+    "listFacets": "real",
+    "listInsights": "real",
+    "getInsight": "real",
+    "createInsightsClaim": "real",
+    "createInsightsNote": "real",
+    "createInsightsStatus": "real"
+  }
+}

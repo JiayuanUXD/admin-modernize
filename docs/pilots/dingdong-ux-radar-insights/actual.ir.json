@@ -1,0 +1,177 @@
+{
+  "version": "1",
+  "generatedAt": "2026-10-27T07:30:00.000Z",
+  "generator": "manual",
+  "operations": [
+    {
+      "id": "listFacets",
+      "method": "GET",
+      "path": "/api/facets",
+      "summary": "各维度可选值与计数",
+      "sources": [
+        {
+          "file": "pilot-source/pipeline/api.py",
+          "lineStart": 221,
+          "symbol": "dispatch"
+        },
+        {
+          "file": "pilot-source/pipeline/insights.py",
+          "lineStart": 486,
+          "symbol": "facets"
+        }
+      ],
+      "response": {
+        "fields": [
+          "axes",
+          "item_types",
+          "owners",
+          "statuses",
+          "taxonomy_version",
+          "trackers"
+        ]
+      }
+    },
+    {
+      "id": "listInsights",
+      "method": "GET",
+      "path": "/api/insights",
+      "summary": "洞察池列表",
+      "sources": [
+        {
+          "file": "pilot-source/pipeline/api.py",
+          "lineStart": 253,
+          "symbol": "dispatch"
+        },
+        {
+          "file": "pilot-source/pipeline/insights.py",
+          "lineStart": 381,
+          "symbol": "list_insights"
+        }
+      ],
+      "response": {
+        "fields": [
+          "filters",
+          "items",
+          "page",
+          "page_size",
+          "pages",
+          "taxonomy_version",
+          "total"
+        ]
+      }
+    },
+    {
+      "id": "getInsight",
+      "method": "GET",
+      "path": "/api/insights/{param}",
+      "summary": "单条洞察详情",
+      "sources": [
+        {
+          "file": "pilot-source/pipeline/api.py",
+          "lineStart": 471,
+          "symbol": "dispatch"
+        },
+        {
+          "file": "pilot-source/pipeline/insights.py",
+          "lineStart": 594,
+          "symbol": "get_insight"
+        }
+      ],
+      "response": {
+        "fields": [
+          "context",
+          "events",
+          "has_state",
+          "insight_id",
+          "item_id",
+          "item_type",
+          "keyword",
+          "like_count",
+          "manual_tags",
+          "muted",
+          "note",
+          "owner",
+          "post_id",
+          "severity",
+          "similar",
+          "source",
+          "starred",
+          "status",
+          "status_id",
+          "tags",
+          "text",
+          "time",
+          "title",
+          "trackers",
+          "ts",
+          "updated_at",
+          "updated_by",
+          "url"
+        ]
+      }
+    },
+    {
+      "id": "claimInsight",
+      "method": "POST",
+      "path": "/api/insights/{param}/claim",
+      "summary": "认领、分配或转交。owner 与 actor 必填，note 可选",
+      "sources": [
+        {
+          "file": "pilot-source/pipeline/api.py",
+          "lineStart": 665,
+          "symbol": "_command"
+        },
+        {
+          "file": "pilot-source/pipeline/insights.py",
+          "lineStart": 921,
+          "symbol": "claim"
+        }
+      ],
+      "response": {
+        "fields": ["insight_id", "owner", "was"]
+      }
+    },
+    {
+      "id": "setInsightNote",
+      "method": "POST",
+      "path": "/api/insights/{param}/note",
+      "summary": "写备注。note 与 actor 都会写入",
+      "sources": [
+        {
+          "file": "pilot-source/pipeline/api.py",
+          "lineStart": 673,
+          "symbol": "_command"
+        },
+        {
+          "file": "pilot-source/pipeline/insights.py",
+          "lineStart": 980,
+          "symbol": "set_note"
+        }
+      ],
+      "response": {
+        "fields": ["insight_id", "note"]
+      }
+    },
+    {
+      "id": "setInsightStatus",
+      "method": "POST",
+      "path": "/api/insights/{param}/status",
+      "summary": "改状态。note 缺省表示不动备注，空串才是清空",
+      "sources": [
+        {
+          "file": "pilot-source/pipeline/api.py",
+          "lineStart": 668,
+          "symbol": "_command"
+        },
+        {
+          "file": "pilot-source/pipeline/insights.py",
+          "lineStart": 944,
+          "symbol": "set_status"
+        }
+      ],
+      "response": {
+        "fields": ["insight_id", "note_touched", "status_id", "was"]
+      }
+    }
+  ]
+}
