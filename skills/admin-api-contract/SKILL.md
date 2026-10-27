@@ -22,7 +22,23 @@ description: Use when prototype or AI-generated admin pages must be connected to
 - **后端先行**：OpenAPI / proto / GraphQL schema → 生成类型与客户端 → 生成 mock。
 - **原型先行**：AI 先写契约文件（OpenAPI YAML 或类型文件）。后端评审的是这份文件，不是 UI。达成一致后它成为唯一来源。
 
-不管哪种：页面只引用契约产物；契约只有一个来源，另一份由它生成，不手工维护两份。
+不管哪种：页面只引用契约产物；契约只有一个来源，另一份由它生成，不手工维护两份。可执行步骤见下面的「流水线」。编排上的默认方向在 `admin-modernize` 的 D4：仓库里没有既有 OpenAPI / proto 时，原型先行。
+
+## 流水线（期望 → 差距 → 骨架）
+
+契约先落到中间表示（IR），再生成骨架。三份文档的形状、出处要求和人工门禁见 `references/ir-schema.md`。JSON Schema 在 `schemas/`（`desired.schema.json`、`actual.schema.json`、`gap.schema.json`）。
+
+下面的脚本路径相对本 skill 目录。样例和大致条数在 `fixtures/sample-app/README.md`。
+
+1. **抽期望** — `scripts/extract-desired.mjs --root <原型目录> [--out desired.ir.json]`
+   扫描 axios / fetch / `$.ajax` 调用点，写出 desired IR。字面量 URL 的置信度是 `medium`，模板 URL 是 `low`。没有出处的接口不会写进去。允许不全，人工补。
+2. **拿实际** — 后端 OpenAPI JSON，或已经整理好的 actual IR。本切片不解析 YAML；OpenAPI 用 JSON（样例是 `fixtures/sample-app/actual.openapi.json`）。
+3. **比差距** — `scripts/build-gap.mjs --desired <desired.ir.json> --actual <openapi.json|actual.ir.json> [--out gap.ir.json]`
+   按方法 + 规范化路径对齐。`match` 是响应字段集合相同，`reshape` 是路径相同但字段不同，`missing` 是期望有而实际没有。`disposition` 先空着。实际多出来的接口不进这张表。
+4. **人工门禁** — 给每条差距填 `disposition`：`direct`（直连）、`bff`（适配层映射）、`pending`（后端还没有）。空着不能往下走。
+5. **生成骨架** — `../../scripts/generate-skeleton.mjs --gap <gap.ir.json> --out-dir <目录>`
+   任一 `disposition` 为空则退出码 1，不写文件。`direct` / `bff` 写入 `mappers.mjs`；`pending` 写入 `pending-endpoints.json` 和 `pending.md`；`route-mode.json` 把操作标成 `real` 或 `pending`（`mock` 留给之后手改）。`client.stub.mjs` 只是 typed client 入口骨架，不是完整客户端。
+6. **接数据层** — 按 `references/data-layer-checklist.md` 把页面改到数据层上，对照骨架审字段。`exposure`（`rest` / `bff` / `mcp`）本切片不参与生成。
 
 ## mock 由契约生成并检查覆盖
 
