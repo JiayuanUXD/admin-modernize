@@ -35,8 +35,11 @@ README 已承认第二后台未跑过——这是最大风险。试点目录：`
 
 - [x] 选 1 个真实需求（列表+表单/抽屉，接口 3–8 个）— 洞察池列表 + 详情抽屉，6 个接口
 - [ ] 阶段 0→1 全跑通：摸底 → 最小约束面 → 离线预览 → 接测试环境 → 上线或可合并
-  - [x] 已直连后台的「接测试环境」（整段 0→1 只半勾到这里）：未改雷达 UI。`check-contract` 对着洞察池 6 条录制/合成响应跑通；`--base` 留给已经起来的本地或测试服务，连不上记 `CONTRACT_ERROR`，不计入不一致数。`pilot-source/` 不是可启动的完整服务，本项不起雷达进程。
-  - [ ] 最小约束面、离线预览、上线或可合并。清单在试点 README，指向 `admin-guardrails` 和 `admin-preview-loop`。本次不跑浏览器。
+  - [x] 契约流水线：副本上的 desired → 手写 actual IR → gap → `disposition: direct` → skeleton
+  - [x] 最小约束面：`docs/pilots/dingdong-ux-radar-insights/guardrails/`（3 条规则 + 基线）。不改 `pilot-source/ui/app.js`，存量冻结。色值字面量基线是 0（副本已经用 CSS 变量），行内 style 107、游离字号 10
+  - [x] 离线预览：跑的是 `skills/admin-preview-loop` 的 fixture（桌面 + 窄屏截图、漏 mock 冒烟）。未改雷达 UI
+  - [x] 已直连后台的「接测试环境」：未改雷达 UI。`check-contract` 对着洞察池 6 条录制/合成响应跑通；`--base` 留给已经起来的本地或测试服务，连不上记 `CONTRACT_ERROR`，不计入不一致数。`pilot-source/` 不是可启动的完整服务，本项不起雷达进程。
+  - [ ] 上线或可合并
 - [x] 记 D1 四项指标的现值和试点后值 — 见该目录 `d1-notes.md`。契约不一致数从 `CONTRACT_SUMMARY mismatch_count` 计数；6 条 gap `reshape` 不是这个数
 - [x] 把踩坑写回对应 skill 的「常见错误 / 红线」（改设施，不改那一页）— `admin-api-contract`：包装层抽取、无 OpenAPI 时用 actual IR、`set_status` 的 note 缺省语义
 
@@ -52,9 +55,9 @@ README 已承认第二后台未跑过——这是最大风险。试点目录：`
 
 ### 5. `admin-preview-loop`：截图命令真跑
 
-- [ ] 在真实浏览器跑通截图命令（桌面+窄屏）
-- [ ] CI 冒烟：未 mock 请求 → 非零退出
-- [ ] 补「反馈环」无 skill 基线组（README 欠账），至少 1 轮对照
+- [x] 在真实浏览器跑通截图命令（桌面+窄屏）。PNG 与 `run-log.json` 在 `skills/admin-preview-loop/fixtures/screenshots/`
+- [x] 未 mock 请求 → 截图命令非零退出（`screenshot.mjs --smoke-unmocked` 已真跑，退出码 1，日志 `smoke-unmocked.json`）。本仓库没有 workflow 文件，命令可以直接放进 CI，但还没有接成流水线任务
+- [ ] 补「反馈环」无 skill 基线组（README 欠账），至少 1 轮对照。本轮只把 fixture 截图存成反馈环基线，没有再跑一组不带 skill 的 agent 对照
 
 ### 6. 评测与评分表落地
 

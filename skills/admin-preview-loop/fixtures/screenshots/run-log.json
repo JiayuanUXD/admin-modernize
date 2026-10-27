@@ -1,0 +1,54 @@
+{
+  "ok": true,
+  "exitCode": 0,
+  "smoke": false,
+  "command": "node skills/admin-preview-loop/scripts/screenshot.mjs",
+  "node": "v22.23.4",
+  "browser": "chrome",
+  "shots": [
+    {
+      "file": "list-empty-desktop.png",
+      "scenario": "list-empty",
+      "viewport": "desktop",
+      "path": "/?state=empty",
+      "issues": []
+    },
+    {
+      "file": "list-empty-narrow.png",
+      "scenario": "list-empty",
+      "viewport": "narrow",
+      "path": "/?state=empty",
+      "issues": []
+    },
+    {
+      "file": "list-many-desktop.png",
+      "scenario": "list-many",
+      "viewport": "desktop",
+      "path": "/?state=many",
+      "issues": []
+    },
+    {
+      "file": "list-many-narrow.png",
+      "scenario": "list-many",
+      "viewport": "narrow",
+      "path": "/?state=many",
+      "issues": []
+    },
+    {
+      "file": "drawer-open-desktop.png",
+      "scenario": "drawer-open",
+      "viewport": "desktop",
+      "path": "/?state=many&open=ins-001",
+      "issues": []
+    },
+    {
+      "file": "drawer-open-narrow.png",
+      "scenario": "drawer-open",
+      "viewport": "narrow",
+      "path": "/?state=many&open=ins-001",
+      "issues": []
+    }
+  ],
+  "issueCount": 0,
+  "unmockedCount": 0
+}

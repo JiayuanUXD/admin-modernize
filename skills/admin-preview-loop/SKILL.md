@@ -82,6 +82,46 @@ AI 的一轮迭代是「改、跑、看、修」。任何一步要等后端、�
 |---|---|
 | 一条命令离线起；固定种子 mock；截图命令 | 状态矩阵；视觉回归；CI 冒烟；生产包不含 mock 的检查 |
 
+## 本仓库可跑的最小设施
+
+反馈环基线就是这一套 fixture：静态列表 + 抽屉，网络层固定种子。它不是雷达页面，也不改 `docs/pilots/dingdong-ux-radar-insights/pilot-source/ui/app.js`。视觉回归的全量比对基线不做，本轮截图只作这一套的反馈环基线。
+
+脚本只要 Node 18+。截图另要 `playwright` 这个包。本机有 Google Chrome 时截图命令会优先用它；没有就再装 Playwright 自带的 Chromium：
+
+```bash
+npm install --no-save playwright
+npx playwright install --with-deps chromium
+```
+
+环境开关是 `APP_MODE=preview`，默认关。不设或设成别的值时，`serve-preview.mjs` 直接退出，不起服务，也不挂 mock。开关和种子都不在页面文件里。页面只声明权限点（`insight.read`、`insight.claim`），预览服务不校验登录。
+
+在仓库根目录：
+
+```bash
+# 离线启动。打印 preview http://127.0.0.1:<端口>
+APP_MODE=preview node skills/admin-preview-loop/scripts/serve-preview.mjs
+
+# 截图。自己拉起预览服务。桌面 1280×800、窄屏 390×844。
+# 等网络空闲和字体。控制台 error、未捕获异常、失败请求、未被 mock 的请求，任一项非零退出。
+node skills/admin-preview-loop/scripts/screenshot.mjs
+
+# 冒烟：故意请求没有登记的 /api/ops/health。退出码必须是 1。
+# 检测器没抓住时退出码是 2。
+node skills/admin-preview-loop/scripts/screenshot.mjs --smoke-unmocked
+
+# 生产包不含 mock。只打包 fixtures/preview-app 的三个静态文件再搜特征。
+node skills/admin-preview-loop/scripts/check-prod-bundle.mjs
+node skills/admin-preview-loop/scripts/check-prod-bundle.mjs --self-test
+```
+
+| 路径 | 内容 |
+|---|---|
+| `fixtures/preview-app/` | 静态页。`?state=empty` 空列表，`?state=many` 多条，`?state=many&open=ins-001` 打开抽屉。`?leak=1` 只给冒烟用 |
+| `fixtures/mock/seed.json` | 固定种子，只在预览服务里读。标志串 `preview-loop-fixed-seed-v1` |
+| `fixtures/screenshots/` | 本轮桌面与窄屏 PNG，`run-log.json`，`smoke-unmocked.json` |
+
+已登记的接口响应带 `X-Preview-Mock: 1`。没登记的 `/api/*` 返回 501，不带这个头。截图命令把「`/api/` 且没有这个头」记成未被 mock。501 而不是非标准状态码：Chrome 会把不认识的状态码挂住，截图就等不到网络空闲。
+
 ## 常见错误
 
 - mock 只有一页数据，分页、空态没覆盖。

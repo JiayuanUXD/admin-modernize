@@ -1,0 +1,33 @@
+{
+  "baseline": "guardrails/ratchet-baseline.json",
+  "requireReason": true,
+  "rules": [
+    {
+      "id": "inline-style",
+      "message": "行内 style → 用 class。动态尺寸写成 CSS 变量（例如 --bar-w），不要把视觉写进 style 属性",
+      "globs": ["pilot-source/ui/**/*.{js,html,css}"],
+      "pattern": "\\bstyle\\s*=",
+      "stripComments": "line",
+      "allow": "inline-style"
+    },
+    {
+      "id": "font-size-off-scale",
+      "message": "字号不在 12/14/16/18/20/24px 刻度上 → 改用刻度或 CSS 变量（例如 var(--fs-sm)），不要写 13px 这类游离值",
+      "globs": ["pilot-source/ui/**/*.{js,html,css}"],
+      "pattern": "font-size\\s*:\\s*(?!(?:12|14|16|18|20|24)px\\b)\\d+px",
+      "flags": "i",
+      "stripComments": "line",
+      "allow": "font-size-off-scale"
+    },
+    {
+      "id": "color-literal",
+      "message": "硬编码色值 → 用现有 CSS 变量（例如 var(--p0)、var(--tx3)）。不要写 #hex、rgb()/hsl() 或颜色名",
+      "globs": ["pilot-source/ui/**/*.{js,html,css}"],
+      "pattern": "(?:color|background(?:-color)?|border(?:-color)?|outline-color|fill|stroke)\\s*:\\s*(?:#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3,4})\\b|rgba?\\(|hsla?\\(|(?:red|blue|white|black|green|yellow|orange|gray|grey|purple|transparent)\\b)",
+      "flags": "i",
+      "exclude": "url\\(|href=",
+      "stripComments": "line",
+      "allow": "color-literal"
+    }
+  ]
+}

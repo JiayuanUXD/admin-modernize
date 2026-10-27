@@ -1,0 +1,65 @@
+{
+  "seed": "preview-loop-fixed-seed-v1",
+  "insights": [
+    {
+      "id": "ins-001",
+      "title": "配送超时的投诉在晚高峰被归成「体验差」，值班的人看不到该认领的 P0",
+      "severity": "P0",
+      "owner": null,
+      "likes": 0,
+      "heat": 128000,
+      "note": null,
+      "body": "固定种子里的长正文，用来看抽屉换行，以及窄屏会不会把操作区挤出屏幕。这不是生产数据。后半段重复同一句话，只为把行撑长：配送超时的投诉在晚高峰被归成体验差，值班的人看不到该认领的 P0。"
+    },
+    {
+      "id": "ins-002",
+      "title": "生鲜袋破损",
+      "severity": "P0",
+      "owner": "周宁",
+      "likes": 3,
+      "heat": -2,
+      "note": "已和仓库对过，今晚复盘",
+      "body": "热度记成负数，覆盖状态矩阵里的负值。"
+    },
+    {
+      "id": "ins-003",
+      "title": "搜索无结果",
+      "severity": "P1",
+      "owner": "李可",
+      "likes": 0,
+      "heat": 0,
+      "note": null,
+      "body": "点赞和热度都是 0。备注按契约允许为空。"
+    },
+    {
+      "id": "ins-004",
+      "title": "会员价显示不一致",
+      "severity": "P2",
+      "owner": "陈晨",
+      "likes": 18,
+      "heat": 420,
+      "note": "等商品中台确认口径",
+      "body": "普通一条，字段齐全。"
+    },
+    {
+      "id": "ins-005",
+      "title": "退款进度文案看不懂",
+      "severity": "P2",
+      "owner": null,
+      "likes": 7,
+      "heat": 15,
+      "note": null,
+      "body": "未认领，备注为空。"
+    },
+    {
+      "id": "ins-006",
+      "title": "发票抬头保存失败",
+      "severity": "P3",
+      "owner": "吴迪",
+      "likes": 1,
+      "heat": 2,
+      "note": "低优先级，本周不排",
+      "body": "严重级别枚举里的 P3。"
+    }
+  ]
+}
