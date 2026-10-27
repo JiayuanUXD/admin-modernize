@@ -21,6 +21,8 @@
 
 ```
 .claude-plugin/plugin.json
+docs/roadmap-0.5.0.md         0.5.0 改进清单
+scripts/generate-skeleton.mjs 差距表过了人工门禁之后写映射骨架
 skills/
   admin-modernize/            编排：阶段、门禁、决策点 D1–D5、红线
     references/metrics-and-eval.md   指标、基准评测、治理
@@ -36,6 +38,11 @@ skills/
   admin-preview-loop/         反馈环：离线预览、mock、截图、视觉回归
   admin-api-contract/         对接面：数据层、契约先行、校验、晋升清单
     references/data-layer-checklist.md
+    references/ir-schema.md   desired / actual / gap 三份 IR
+    schemas/                  上述 IR 的 JSON Schema
+    scripts/extract-desired.mjs
+    scripts/build-gap.mjs
+    fixtures/sample-app/      抽取与差距的合成样例
   admin-legacy-migration/     存量迁移
 adapters/
   README.md                   adapter 是什么、怎么新建
@@ -50,13 +57,16 @@ adapters/
 claude --plugin-dir /Users/liujiayuan/App/admin-modernize
 ```
 
-三个脚本也能单独跑：
+脚本也能单独跑：
 
 ```bash
 node skills/admin-recon/scripts/inventory.mjs --topology <仓库>              # 先判单仓/分仓
 node skills/admin-recon/scripts/inventory.mjs <仓库> --json /tmp/inventory.json
 node skills/admin-guardrails/scripts/ratchet.mjs --config <规则配置> --root <仓库> --report
 node skills/admin-guardrails/scripts/map-tokens.mjs --tokens <token 文件或目录> --scan <代码目录>
+node skills/admin-api-contract/scripts/extract-desired.mjs --root <原型目录> --out /tmp/desired.ir.json
+node skills/admin-api-contract/scripts/build-gap.mjs --desired /tmp/desired.ir.json --actual <openapi.json> --out /tmp/gap.ir.json
+node scripts/generate-skeleton.mjs --gap /tmp/gap.ir.json --out-dir /tmp/skeleton
 ```
 
 ## 状态（0.4.0）

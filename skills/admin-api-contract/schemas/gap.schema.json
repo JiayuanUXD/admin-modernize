@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "gap-table IR",
+  "description": "期望与实际按方法 + 路径对齐后的差距。disposition 在人工门禁之前必须为空。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "generatedAt", "generator", "items"],
+  "properties": {
+    "version": { "const": "1" },
+    "generatedAt": { "type": "string", "minLength": 1 },
+    "generator": { "type": "string", "minLength": 1 },
+    "items": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/item" }
+    }
+  },
+  "definitions": {
+    "item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["desiredId", "actualId", "method", "path", "status", "notes", "disposition", "exposure"],
+      "properties": {
+        "desiredId": { "type": "string", "minLength": 1 },
+        "actualId": { "type": ["string", "null"] },
+        "method": { "enum": ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"] },
+        "path": { "type": "string", "pattern": "^/" },
+        "status": { "enum": ["match", "reshape", "missing"] },
+        "notes": { "type": "string" },
+        "disposition": { "type": ["string", "null"], "enum": ["direct", "bff", "pending", null] },
+        "exposure": { "type": ["string", "null"], "enum": ["rest", "bff", "mcp", null] }
+      }
+    }
+  }
+}

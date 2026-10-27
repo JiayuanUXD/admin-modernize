@@ -1,0 +1,47 @@
+{
+  "version": "1",
+  "generatedAt": "2026-01-01T00:00:00.000Z",
+  "generator": "build-gap",
+  "items": [
+    {
+      "desiredId": "listOrders",
+      "actualId": "listOrders",
+      "method": "GET",
+      "path": "/api/orders",
+      "status": "reshape",
+      "notes": "响应字段不一致；实际有而期望无：createdAt",
+      "disposition": null,
+      "exposure": null
+    },
+    {
+      "desiredId": "createOrder",
+      "actualId": "createOrder",
+      "method": "POST",
+      "path": "/api/orders",
+      "status": "reshape",
+      "notes": "响应字段不一致；期望有而实际无：note",
+      "disposition": null,
+      "exposure": null
+    },
+    {
+      "desiredId": "getOrder",
+      "actualId": null,
+      "method": "GET",
+      "path": "/api/orders/{id}",
+      "status": "missing",
+      "notes": "实际能力中没有 GET /api/orders/{id}",
+      "disposition": null,
+      "exposure": null
+    },
+    {
+      "desiredId": "listOrdersStats",
+      "actualId": "listOrdersStats",
+      "method": "GET",
+      "path": "/api/orders/stats",
+      "status": "match",
+      "notes": "响应字段一致",
+      "disposition": null,
+      "exposure": null
+    }
+  ]
+}

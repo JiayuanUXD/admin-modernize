@@ -12,20 +12,22 @@
 
 现状偏流程文档；缺可重复执行的中间产物与生成步骤。
 
-- [ ] 定义 IR（JSON）：`desired-openapi`、`actual-capabilities`（带 `file:line`）、`gap-table`（match / reshape / missing）
-- [ ] 增加脚本：从页面调用点 / 数据层 / mock 抽「期望契约」草稿（允许不全，人工补）
-- [ ] 增加脚本或 skill 步骤：对照后端 OpenAPI / 代码，产出差距表
-- [ ] 人工门禁：勾选每条缺口的处置（直连 / BFF 映射 / pending）
-- [ ] 生成最小产物：映射层骨架 + typed client 入口 + `mock|real|pending` 配置表
+IR、抽取 / 差距脚本、人工门禁和骨架生成已经落地。typed client 仍是骨架（`client.stub.mjs`），不是完整生成的类型化客户端。试点页切真接口后的不一致计数还没做，见下面未勾的验收项。
+
+- [x] 定义 IR（JSON）：`desired-openapi`、`actual-capabilities`（带 `file:line`）、`gap-table`（match / reshape / missing）
+- [x] 增加脚本：从页面调用点 / 数据层 / mock 抽「期望契约」草稿（允许不全，人工补）
+- [x] 增加脚本或 skill 步骤：对照后端 OpenAPI / 代码，产出差距表
+- [x] 人工门禁：勾选每条缺口的处置（直连 / BFF 映射 / pending）
+- [x] 生成最小产物：映射层骨架 + typed client 入口 + `mock|real|pending` 配置表（typed client 为骨架，不是完整客户端）
 - [ ] 验收：试点页切真接口时，契约不一致数可从校验日志计数（对齐 D1）
 
 ### 2. 编排 skill：默认 D4 = 原型先行（可覆盖）
 
 主场景是 AI 高保真原型对接老后台。
 
-- [ ] `admin-modernize` 写明：无既有 OpenAPI 时默认「原型先行契约」
-- [ ] 有成熟 OpenAPI 时走「后端先行」，决策卡只问一次
-- [ ] 红线补一条：禁止 UI 与契约双源手写维护
+- [x] `admin-modernize` 写明：无既有 OpenAPI 时默认「原型先行契约」
+- [x] 有成熟 OpenAPI 时走「后端先行」，决策卡只问一次
+- [x] 红线补一条：禁止 UI 与契约双源手写维护
 
 ### 3. 真实试点闭环（一个后台、一条需求）
 
