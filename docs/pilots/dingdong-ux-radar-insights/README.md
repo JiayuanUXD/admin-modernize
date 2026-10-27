@@ -4,9 +4,9 @@
 
 ## 目标
 
-页面已经用 `get` / `post` / `api` 打到现网接口。这次要证明：扩完抽取之后，这 6 个接口能从副本里抽出 desired，对照手写的 actual IR 得到 gap，填上 disposition 之后能生成骨架。
+页面已经用 `get` / `post` / `api` 打到现网接口。这次要证明两件事：扩完抽取之后，这 6 个接口能从副本里抽出 desired，对照手写的 actual IR 得到 gap，填上 disposition 之后能生成骨架；切真接口之后，契约不一致数能从 `check-contract` 的校验日志读出来。
 
-不改雷达 UI，不接测试环境，不把骨架接回页面。最小约束面只冻结这份副本里的存量；离线预览跑的是 `admin-preview-loop` 的 fixture，不是这个页面。
+不改雷达 UI，不把骨架接回页面。最小约束面只冻结这份副本里的存量；离线预览跑的是 `admin-preview-loop` 的 fixture，不是这个页面。已直连后台的「接到测试环境」见「阶段 0→1」，不是再改一版界面。
 
 ## 切片
 
@@ -53,6 +53,9 @@ disposition 六条都是 `direct`。现网页面已经直接调用这些接口�
 | `actual.ir.json` | 按路由和 `insights.py` 手写，每条有 `file` + `lineStart` |
 | `gap.ir.json` | `build-gap` 的结果，再把 `disposition` 填成 `direct` |
 | `skeleton/` | `generate-skeleton`。`client.stub.mjs` 仍是入口骨架，不是完整客户端 |
+| `samples/` | 6 条录制/合成响应。顶层键对齐 actual 的 `response.fields`，不是现网抓包 |
+| `samples-bad/` | 列表故意缺 `total` 和 `items`，证明 mismatch 能大于 0 |
+| `check-contract.log` | 上面两组的校验日志 |
 | `lessons.md` | 踩坑 |
 | `d1-notes.md` | D1 四项的试点前 / 后 |
 
@@ -94,6 +97,56 @@ node scripts/generate-skeleton.mjs \
 
 对拍时忽略各文件的 `generatedAt`。
 
+## 切真接口后的校验
+
+不一致数只认下面的 `CONTRACT_SUMMARY`。`gap.ir.json` 里 6 条 `reshape` 是期望侧没抽出响应字段，不是这个数。
+
+样本按 `insights.py` 的返回形状手写，合成数据，没有连雷达。文件名里的下划线会还原成 `/`，`{param}` 保持原样。
+
+在仓库根目录：
+
+```bash
+node skills/admin-api-contract/scripts/check-contract.mjs \
+  --actual docs/pilots/dingdong-ux-radar-insights/actual.ir.json \
+  --samples docs/pilots/dingdong-ux-radar-insights/samples
+```
+
+期望退出码 0，标准输出：
+
+```
+CONTRACT_SUMMARY mismatch_count=0 warning_count=0 checked=6 error_count=0
+```
+
+坏样本（期望退出码 1）：
+
+```bash
+node skills/admin-api-contract/scripts/check-contract.mjs \
+  --actual docs/pilots/dingdong-ux-radar-insights/actual.ir.json \
+  --samples docs/pilots/dingdong-ux-radar-insights/samples-bad
+```
+
+```
+CONTRACT_MISMATCH op=listInsights method=GET path=/api/insights missing=items,total
+CONTRACT_SUMMARY mismatch_count=1 warning_count=0 checked=1 error_count=0
+```
+
+雷达测试环境已经起来时，用 `--base http://127.0.0.1:端口` 现场拉。连不上记 `CONTRACT_ERROR`，脚本不崩，这次失败不进 `mismatch_count`。路径参数默认替换成 `sample`，要用真实 id 时加 `--param`。
+
+## 阶段 0→1（已直连后台）
+
+页面早就在调这 6 个真接口。这一阶段的「接到测试环境」不是改 UI，也不是把 `skeleton/` 接回 `pilot-source/ui/app.js`：
+
+- 校验器在本仓库用 Node 跑通，对着 `samples/` 的录制/合成响应。
+- 真要打测试环境时，服务在雷达仓里起，再用 `--base`。本目录的 `pilot-source/` 只有 `ui/app.js`、`pipeline/api.py`、`pipeline/insights.py`，没有数据库和包入口，这里不起雷达进程。
+
+这一阶段里约束面和离线预览已经另做，上线还没有：
+
+| 项 | 状态 | 补法 |
+|---|---|---|
+| 最小约束面 | 已做 | `guardrails/`。不改 `pilot-source/ui/app.js`，存量冻结。见下一节 |
+| 离线预览 | 已做（fixture） | `skills/admin-preview-loop`。桌面 + 窄屏截图、漏 mock 冒烟。不是雷达页面 |
+| 上线或可合并 | 未做 | 骨架停在 `skeleton/` |
+
 ## 最小约束面
 
 规则和基线在 `guardrails/`。不改 `pilot-source/ui/app.js`，存量冻结。复跑命令、三条规则的处数（行内 style 107、游离字号 10、色值字面量 0）写在 `guardrails/README.md`。
@@ -115,6 +168,6 @@ node skills/admin-guardrails/scripts/ratchet.mjs \
 
 ## D1 前后
 
-试点前：现网页面和接口已经接在一起，没有独立契约层。契约不一致数不能从校验日志计数（基线 N/A，不是「脚手架计数为 0」）。
+试点前：现网页面和接口已经接在一起，没有独立契约层。契约不一致数不能从校验日志计数（基线 **N/A**，不是「脚手架计数为 0」）。
 
-试点后：流水线能产出 gap、disposition 和 skeleton。不一致计数仍然没有。详见 `d1-notes.md`。
+试点后：`samples/` 的 `mismatch_count=0`（`checked=6`）。这个 0 来自校验日志，不是把 gap 的 reshape 当成 0。`samples-bad/` 的 `mismatch_count=1`。详见 `d1-notes.md`。

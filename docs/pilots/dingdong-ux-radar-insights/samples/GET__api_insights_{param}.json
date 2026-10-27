@@ -1,0 +1,32 @@
+{
+  "insight_id": "post:demo-1",
+  "item_type": "post",
+  "item_id": "demo-1",
+  "post_id": "demo-1",
+  "title": "配送超时（合成）",
+  "text": "合成样本，不是现网原文。",
+  "ts": 1760000000,
+  "time": "2025-10-09 12:26",
+  "like_count": 12,
+  "url": "https://example.invalid/post/demo-1",
+  "source": "search",
+  "keyword": "超时",
+  "severity": "sev.p1",
+  "owner": "li",
+  "status_id": "open",
+  "status": "待评估",
+  "starred": false,
+  "muted": false,
+  "has_state": true,
+  "note": "",
+  "updated_at": "2026-01-01T00:00:00Z",
+  "updated_by": "li",
+  "tags": { "experience": ["配送"] },
+  "manual_tags": {},
+  "trackers": [
+    { "id": "fulfillment", "name": "履约时效与超时", "owner": "履约" }
+  ],
+  "context": { "post": null, "siblings": [] },
+  "similar": [],
+  "events": []
+}

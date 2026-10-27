@@ -45,9 +45,11 @@ skills/
     schemas/                  上述 IR 的 JSON Schema
     scripts/extract-desired.mjs
     scripts/build-gap.mjs
+    scripts/check-contract.mjs  录制或现场响应对照 response.fields，日志里计数
     scripts/README.md         薄封装名单、怎么扩展、认不出 URL 就跳过
     fixtures/sample-app/      抽取与差距的合成样例
     fixtures/thin-wrappers/   get/post/api 薄封装样例
+    fixtures/contract-check/  check-contract 的好/坏样本
   admin-legacy-migration/     存量迁移
 adapters/
   README.md                   adapter 是什么、怎么新建
@@ -71,6 +73,7 @@ node skills/admin-guardrails/scripts/ratchet.mjs --config <规则配置> --root 
 node skills/admin-guardrails/scripts/map-tokens.mjs --tokens <token 文件或目录> --scan <代码目录>
 node skills/admin-api-contract/scripts/extract-desired.mjs --root <原型目录> --out /tmp/desired.ir.json
 node skills/admin-api-contract/scripts/build-gap.mjs --desired /tmp/desired.ir.json --actual <openapi.json> --out /tmp/gap.ir.json
+node skills/admin-api-contract/scripts/check-contract.mjs --actual <actual.ir.json> --samples <录制目录>
 node scripts/generate-skeleton.mjs --gap /tmp/gap.ir.json --out-dir /tmp/skeleton
 APP_MODE=preview node skills/admin-preview-loop/scripts/serve-preview.mjs
 node skills/admin-preview-loop/scripts/screenshot.mjs
@@ -93,6 +96,6 @@ node skills/admin-preview-loop/scripts/check-prod-bundle.mjs
 | `admin-repo-split` | 只有流程文档：契约先行、逻辑拆→物理拆、验收、回滚。`git filter-repo` 的命令没有在真实历史数据上跑过 |
 | dd-design 规则包 | 7 条与参考 lint 对账一致；S3 修了漏单行写法（84 到 186），新增 S4（rgb/hsl） |
 | 反馈环「交付必含」 | 补写后用全新 agent 复测：Vue 2 + Element UI + vue-cli + axios 场景，用户施压「示例数据写死在组件里」。6 项评分全过（mock 在网络层、环境开关加生产包检查、固定种子加状态矩阵、截图脚本含收集项并非零退出、一条命令启动、页面组件未改）。缺的项（截图脚本未运行、基准图未存）都写了原因和补法。1 次，不是统计结论 |
-| 未验证 | 反馈环的无 skill agent 对照仍未跑（fixture 截图基线在 `skills/admin-preview-loop/fixtures/screenshots/`，桌面 + 窄屏已在真实浏览器跑过，漏 mock 会非零退出）；编排、对接面的修订版没有复测；vue-cli 构建与 mock 中间件没在真实项目里跑过；约束面、存量迁移没有第二次复测；拓扑扫描没在真实单仓/分仓上验证过；拆仓流程没实际拆过任何仓库；`map-tokens.mjs` 没在真实主题文件上验证过。第二个后台在洞察池源码副本上跑过契约流水线和棘轮基线（未改 UI），离线预览跑的是 skill fixture，没有接测试环境 |
+| 未验证 | 反馈环的无 skill agent 对照仍未跑（fixture 截图基线在 `skills/admin-preview-loop/fixtures/screenshots/`，桌面 + 窄屏已在真实浏览器跑过，漏 mock 会非零退出）；编排、对接面的修订版没有复测；vue-cli 构建与 mock 中间件没在真实项目里跑过；约束面、存量迁移没有第二次复测；拓扑扫描没在真实单仓/分仓上验证过；拆仓流程没实际拆过任何仓库；`map-tokens.mjs` 没在真实主题文件上验证过。第二个后台在洞察池源码副本上跑过契约流水线、`check-contract`（录制/合成响应）和棘轮基线（未改 UI）。离线预览跑的是 skill fixture。没有起雷达进程，没有把骨架接回页面 |
 
 本目录还不是 git 仓库。

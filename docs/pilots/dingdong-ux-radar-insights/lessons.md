@@ -41,3 +41,11 @@ actual IR 手写，`generator` 是 `manual`。每条至少一处路由（`api.py
 `set_note` 不是这套语义：它总是写入 `note`。`claim` 的 `note` 缺省走空串，再收成「没有备注」，也和 `set_status` 不同。适配层不能把三种缺省收成一种。
 
 差距表的 `status` 六条都是 `reshape`，因为期望侧字段为空、实际侧有顶层键。`disposition` 仍填 `direct`：页面已经在调这些接口，不是缺后端，也不该为了字段没抽出来就生成一层 BFF。
+
+## 不一致数
+
+D1 的契约不一致数不是这 6 条 reshape。reshape 只说明抽取没看见 `res.data.<字段>`，而页面是直接读返回值。
+
+切真接口之后跑 `check-contract`，读 `CONTRACT_SUMMARY` 的 `mismatch_count`。它只比 actual（优先于 desired）`response.fields` 的顶层键：缺字段算 1 条 mismatch，多余字段是 warning，不算不一致。`samples/` 是按 `insights.py` 返回形状写的合成响应，汇总是 `mismatch_count=0`、`checked=6`。`samples-bad/` 故意拿掉列表的 `total` 和 `items`，汇总是 `mismatch_count=1`。
+
+已直连的后台不要为了「接到测试环境」去改雷达 UI。这一步是本地把校验器跑起来，对着录制响应或已经起来的 `--base`。副本里没有数据库，不起雷达进程。连不上记 `CONTRACT_ERROR`，不要把拉失败算进 mismatch。

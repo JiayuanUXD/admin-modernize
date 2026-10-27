@@ -1,0 +1,17 @@
+{
+  "version": "1",
+  "generatedAt": "2026-01-01T00:00:00.000Z",
+  "generator": "manual",
+  "operations": [
+    {
+      "id": "listOrders",
+      "method": "GET",
+      "path": "/api/orders",
+      "summary": "故意缺 status，并多一个 note",
+      "sources": [
+        { "file": "fixtures/contract-check/bad/actual.ir.json", "lineStart": 1 }
+      ],
+      "response": { "fields": ["id", "status"] }
+    }
+  ]
+}
