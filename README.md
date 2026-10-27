@@ -22,7 +22,7 @@
 ```
 .claude-plugin/plugin.json
 docs/roadmap-0.5.0.md         0.5.0 改进清单
-docs/pilots/dingdong-ux-radar-insights/  洞察池试点（未改业务仓；含 guardrails 棘轮基线）
+docs/pilots/dingdong-ux-radar-insights/  洞察池试点（含 guardrails 棘轮基线；pilot-source 为接回前快照；雷达本机分支已接薄层，尚未 push）
 scripts/generate-skeleton.mjs 差距表过了人工门禁之后写映射骨架
 skills/
   admin-modernize/            编排：阶段、门禁、决策点 D1–D5、红线
@@ -96,6 +96,6 @@ node skills/admin-preview-loop/scripts/check-prod-bundle.mjs
 | `admin-repo-split` | 只有流程文档：契约先行、逻辑拆→物理拆、验收、回滚。`git filter-repo` 的命令没有在真实历史数据上跑过 |
 | dd-design 规则包 | 7 条与参考 lint 对账一致；S3 修了漏单行写法（84 到 186），新增 S4（rgb/hsl） |
 | 反馈环「交付必含」 | 补写后用全新 agent 复测：Vue 2 + Element UI + vue-cli + axios 场景，用户施压「示例数据写死在组件里」。6 项评分全过（mock 在网络层、环境开关加生产包检查、固定种子加状态矩阵、截图脚本含收集项并非零退出、一条命令启动、页面组件未改）。缺的项（截图脚本未运行、基准图未存）都写了原因和补法。1 次，不是统计结论 |
-| 未验证 | 反馈环的无 skill agent 对照仍未跑（fixture 截图基线在 `skills/admin-preview-loop/fixtures/screenshots/`，桌面 + 窄屏已在真实浏览器跑过，漏 mock 会非零退出）；编排、对接面的修订版没有复测；vue-cli 构建与 mock 中间件没在真实项目里跑过；约束面、存量迁移没有第二次复测；拓扑扫描没在真实单仓/分仓上验证过；拆仓流程没实际拆过任何仓库；`map-tokens.mjs` 没在真实主题文件上验证过。第二个后台在洞察池源码副本上跑过契约流水线、`check-contract`（录制/合成响应）和棘轮基线（未改 UI）。离线预览跑的是 skill fixture。没有起雷达进程，没有把骨架接回页面 |
+| 未验证 | 反馈环的无 skill agent 对照仍未跑（fixture 截图基线在 `skills/admin-preview-loop/fixtures/screenshots/`，桌面 + 窄屏已在真实浏览器跑过，漏 mock 会非零退出）；编排、对接面的修订版没有复测；vue-cli 构建与 mock 中间件没在真实项目里跑过；约束面、存量迁移没有第二次复测；拓扑扫描没在真实单仓/分仓上验证过；拆仓流程没实际拆过任何仓库；`map-tokens.mjs` 没在真实主题文件上验证过。第二个后台在洞察池源码副本上跑过契约流水线、`check-contract`（录制/合成响应）和棘轮基线（未改 `pilot-source` UI）。离线预览跑的是 skill fixture。雷达仓本机分支 `feat/insights-thin-api` 已用薄数据层接回，尚未 push。没有起雷达进程 |
 
 本目录还不是 git 仓库。

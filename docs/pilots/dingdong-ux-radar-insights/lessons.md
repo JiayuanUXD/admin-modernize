@@ -48,4 +48,14 @@ D1 的契约不一致数不是这 6 条 reshape。reshape 只说明抽取没看�
 
 切真接口之后跑 `check-contract`，读 `CONTRACT_SUMMARY` 的 `mismatch_count`。它只比 actual（优先于 desired）`response.fields` 的顶层键：缺字段算 1 条 mismatch，多余字段是 warning，不算不一致。`samples/` 是按 `insights.py` 返回形状写的合成响应，汇总是 `mismatch_count=0`、`checked=6`。`samples-bad/` 故意拿掉列表的 `total` 和 `items`，汇总是 `mismatch_count=1`。
 
-已直连的后台不要为了「接到测试环境」去改雷达 UI。这一步是本地把校验器跑起来，对着录制响应或已经起来的 `--base`。副本里没有数据库，不起雷达进程。连不上记 `CONTRACT_ERROR`，不要把拉失败算进 mismatch。
+已直连的后台，「接到测试环境」是本地把校验器跑起来，对着录制响应或已经起来的 `--base`。副本里没有数据库，不起雷达进程。连不上记 `CONTRACT_ERROR`，不要把拉失败算进 mismatch。
+
+## 接回薄数据层
+
+雷达页面没有打包步骤。`ui/index.html` 按顺序加载普通脚本。`skeleton/client.stub.mjs` 是 ESM，这种仓库收不了 `export`，不能把 stub 文件原样丢进页面。
+
+`createStubClient` 的每个方法都会 `throw new Error('stub client: … 未接数据层')`。那是占住方法名的入口，不是可以上线的实现。接回时要换成真正打到现有 `get` / `post` 的函数。
+
+薄层挂在页面已经在用的 `get` / `post` 上，不另起一套请求。方法名与 `client.stub.mjs` 的 `operations` 对齐，才好和骨架对账。洞察池这一例是 `createInsightsApi(get, post)`，六个名字是 `listFacets`、`listInsights`、`getInsight`、`createInsightsClaim`、`createInsightsNote`、`createInsightsStatus`。只把这 6 个调用点改到薄层；bulk、flag、tag、severity、owner-loads 仍直接调。`index.html` 先加载 `insights-api.js`，再加载 `app.js`。
+
+这发生在内网仓 `dingdong-ux-radar` 的分支 `feat/insights-thin-api`（用户本机已提交，尚未 push，没有 MR）。本目录的 `pilot-source/` 仍是接回前快照。disposition 仍是 `direct`。

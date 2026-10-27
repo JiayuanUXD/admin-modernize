@@ -96,6 +96,9 @@ description: Use when prototype or AI-generated admin pages must be connected to
 - 只扫 axios / fetch。页面若是 `get(url)` / `post(url, body)` / `api('GET', url)`，内部 `fetch(path)` 的 path 是变量，会抽到 0 条。先对上薄封装名单，再判断页面有没有调接口。
 - 没有 OpenAPI 就手写第二份 OpenAPI，和代码各维护一份。后端已经写在路由和实现里时，用 actual IR，出处指到文件和行。叮咚体验雷达洞察池这一例见 `docs/pilots/dingdong-ux-radar-insights/`。
 - 把 `set_status` 的 `note` 缺省当成空串。缺省是不动原来的备注，传空串才是清空。抽取只能看见有的调用点传了 `note`，看不见这层差别，不要在适配层补一个空备注。
+- 无打包的页面仓直接放进 `client.stub.mjs`。骨架是 ESM。`index.html` 按顺序加载脚本的仓库收不了 `export`。接回用同目录的普通脚本。
+- 把 stub 里的 `throw new Error('stub client: … 未接数据层')` 当成实现。它只占方法名。上线前要换成真正的数据层调用。
+- 薄层另起方法名，或另起一套请求。方法名对齐 `client.stub.mjs` 的 `operations`，请求仍走页面已有的 `get` / `post`，才对得上骨架。洞察池这一例是 `createInsightsApi(get, post)`，见 `docs/pilots/dingdong-ux-radar-insights/lessons.md`。
 
 ## 红线
 
@@ -105,3 +108,4 @@ description: Use when prototype or AI-generated admin pages must be connected to
 | 没 OpenAPI 就凭记忆补实际能力 | 每条要有 `file:line`。没有出处的能力不进差距表 |
 | 改状态时把没传的 `note` 写成 `""` | 缺省不等于清空。`set_status` 里 `None` 是不动备注 |
 | 把 gap 的 reshape 条数当成 D1 契约不一致数 | 不一致数只认 `check-contract` 的 `CONTRACT_SUMMARY mismatch_count`。reshape 是抽取缺口，不是校验日志 |
+| 把 `client.stub.mjs` 原样丢进无打包页面 | ESM stub 上不了 `index.html` 顺序加载的页面。薄层挂现有 `get` / `post`，方法名对齐骨架；会 throw 的 stub 不是实现 |

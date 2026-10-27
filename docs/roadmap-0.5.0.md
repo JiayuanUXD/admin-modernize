@@ -34,12 +34,12 @@ IR、抽取 / 差距脚本、人工门禁、骨架生成和响应校验（`check
 README 已承认第二后台未跑过——这是最大风险。试点目录：`docs/pilots/dingdong-ux-radar-insights/`（叮咚买菜 · 小红书体验雷达，洞察池列表 + 抽屉）。
 
 - [x] 选 1 个真实需求（列表+表单/抽屉，接口 3–8 个）— 洞察池列表 + 详情抽屉，6 个接口
-- [ ] 阶段 0→1 全跑通：摸底 → 最小约束面 → 离线预览 → 接测试环境 → 上线或可合并
+- [x] 阶段 0→1 全跑通：摸底 → 最小约束面 → 离线预览 → 接测试环境 → 上线或可合并。子项齐。业务仓 MR 未开：可合并材料在内网仓 `dingdong-ux-radar` 分支 `feat/insights-thin-api`，用户本机已提交，尚未 push
   - [x] 契约流水线：副本上的 desired → 手写 actual IR → gap → `disposition: direct` → skeleton
   - [x] 最小约束面：`docs/pilots/dingdong-ux-radar-insights/guardrails/`（3 条规则 + 基线）。不改 `pilot-source/ui/app.js`，存量冻结。色值字面量基线是 0（副本已经用 CSS 变量），行内 style 107、游离字号 10
   - [x] 离线预览：跑的是 `skills/admin-preview-loop` 的 fixture（桌面 + 窄屏截图、漏 mock 冒烟）。未改雷达 UI
   - [x] 已直连后台的「接测试环境」：未改雷达 UI。`check-contract` 对着洞察池 6 条录制/合成响应跑通；`--base` 留给已经起来的本地或测试服务，连不上记 `CONTRACT_ERROR`，不计入不一致数。`pilot-source/` 不是可启动的完整服务，本项不起雷达进程。
-  - [ ] 上线或可合并
+  - [x] 上线或可合并。可合并材料是内网仓 `dingdong-ux-radar` 分支 `feat/insights-thin-api` 的薄数据层，加上本目录契约与骨架。`ui/insights-api.js` 的 `createInsightsApi(get, post)` 方法名对齐 `skeleton/client.stub.mjs`；`ui/app.js` 只改 facets / list / detail / claim / status / note；`ui/index.html` 先加载 `insights-api.js`。用户本机已提交。尚未 push，内网 GitLab MR 由用户决定何时开。未把会 throw 的 ESM stub 原样上线；disposition 仍是 `direct`，行为与接回前一致。`pilot-source/` 仍是接回前快照，与该分支有意不一致
 - [x] 记 D1 四项指标的现值和试点后值 — 见该目录 `d1-notes.md`。契约不一致数从 `CONTRACT_SUMMARY mismatch_count` 计数；6 条 gap `reshape` 不是这个数
 - [x] 把踩坑写回对应 skill 的「常见错误 / 红线」（改设施，不改那一页）— `admin-api-contract`：包装层抽取、无 OpenAPI 时用 actual IR、`set_status` 的 note 缺省语义
 
