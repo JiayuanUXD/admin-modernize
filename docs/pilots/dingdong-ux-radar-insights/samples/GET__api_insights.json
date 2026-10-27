@@ -1,0 +1,21 @@
+{
+  "total": 1,
+  "page": 1,
+  "page_size": 20,
+  "pages": 1,
+  "taxonomy_version": "2026-01",
+  "filters": { "q": "", "sort": "time_desc" },
+  "items": [
+    {
+      "insight_id": "post:demo-1",
+      "item_type": "post",
+      "item_id": "demo-1",
+      "title": "配送超时（合成）",
+      "text": "合成样本，不是现网原文。",
+      "severity": "sev.p1",
+      "owner": "",
+      "status_id": "open",
+      "status": "待评估"
+    }
+  ]
+}

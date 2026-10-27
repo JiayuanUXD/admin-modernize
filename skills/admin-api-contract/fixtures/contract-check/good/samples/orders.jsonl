@@ -1,0 +1,1 @@
+{"method":"POST","path":"/api/orders","body":{"sku":"a"},"response":{"id":"o2"}}

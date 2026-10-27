@@ -1,0 +1,19 @@
+{
+  "version": "1",
+  "generatedAt": "2026-01-01T00:00:00.000Z",
+  "generator": "manual",
+  "operations": [
+    {
+      "id": "listOrders",
+      "method": "GET",
+      "path": "/api/orders",
+      "summary": "故意比 actual 多要求 note，用来证明 actual 优先",
+      "request": { "query": {}, "body": null },
+      "response": { "fields": ["id", "note", "status"] },
+      "sources": [
+        { "file": "fixtures/contract-check/good/desired.ir.json", "lineStart": 1 }
+      ],
+      "confidence": "high"
+    }
+  ]
+}
