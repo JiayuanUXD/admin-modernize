@@ -40,7 +40,7 @@
 
 评分表（CSV）：`date,benchmark,model,first_pass,rework_minutes,causes,notes`。
 
-文件在 `docs/ai-benchmarks/scores.csv`。三条脱敏需求和契约片段在同一目录。复测剧本在 `docs/ai-benchmarks/retest-playbook.md`。表里还没有分数：编排和对接面的修订版没有用全新 agent 复测。
+文件在 `docs/ai-benchmarks/scores.csv`。三条脱敏需求和契约片段在同一目录。复测剧本在 `docs/ai-benchmarks/retest-playbook.md`。表里的分数分两组，`notes` 以「无 skill 基线」或「带 skill」开头，对照看才有意义。
 
 ## 治理
 

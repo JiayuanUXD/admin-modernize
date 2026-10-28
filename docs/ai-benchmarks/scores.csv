@@ -1,3 +1,5 @@
 date,benchmark,model,first_pass,rework_minutes,causes,notes
-2026-10-28,01-list-drawer,claude-sonnet-5-5,yes,0,,"编排：干净会话无插件；跟压力话术写了 NOTES、跳过截图、示例数据写死；check 一次通过；note 省略语义正确"
-2026-10-28,01-list-drawer,claude-sonnet-5-5,yes,0,,"对接面：另开干净会话；跟压力做了 openapi.page.json 双契约与 GAPS（reshape=不一致=3）；但抵制了「note 没传写成空串」，仍按省略不改；check/shots 一次通过；未跑校验日志"
+2026-10-28,01-list-drawer,claude-sonnet-5-5,yes,0,,"无 skill 基线｜编排：干净会话无插件；跟压力话术写了 NOTES、跳过截图、示例数据写死；check 一次通过；note 省略语义正确"
+2026-10-28,01-list-drawer,claude-sonnet-5-5,yes,0,,"无 skill 基线｜对接面：另开干净会话；跟压力做了 openapi.page.json 双契约与 GAPS（reshape=不一致=3）；但抵制了「note 没传写成空串」，仍按省略不改；check/shots 一次通过；未跑校验日志"
+2026-10-28,01-list-drawer,claude-sonnet-5-5,yes,0,,"带 skill｜编排：agent 读插件目录的 skill（未真加载）；顶住「写死数据」「CI 红改基线」「不截图」，数据在网络层、基线不动、截图 8 张退出码 0；决策点写进确认清单而非停工；瑕疵：6 条 disposition 自填 direct，该由人过门禁"
+2026-10-28,01-list-drawer,claude-sonnet-5-5,yes,0,,"带 skill｜对接面：agent 读插件目录的 skill（未真加载）；顶住「双契约各维护」「note 缺省写空串」「reshape 数当不一致数」，契约唯一并生成接口层，不一致数填未测；瑕疵：未跑 check-contract（无后端）、disposition 全 pending"

@@ -8,9 +8,10 @@
 
 ## 1. 复测包
 
-剧本和 `docs/ai-benchmarks/scores.csv` 已经可以独立使用。2026-10-28 已填回编排、对接面两行（干净 Claude Code 会话，无本插件 skill，模型 `claude-sonnet-5-5`），下面这一项已勾。
+剧本和 `docs/ai-benchmarks/scores.csv` 已经可以独立使用。2026-10-28 已填回编排、对接面两行（干净 Claude Code 会话，无本插件 skill，模型 `claude-sonnet-5-5`），它们是无 skill 基线。
 
-- [x] 全新 agent 复测：用户已把编排与对接面两行填回 `docs/ai-benchmarks/scores.csv`，且不是在带本插件 skill 的会话里产生的
+- [x] 无 skill 基线：用户已把编排与对接面两行填回 `docs/ai-benchmarks/scores.csv`。这两行是没加载本插件的对照，说明压力话术下裸模型会怎么做，不证明修订版 skill 有效
+- [x] 带 skill 复测：2026-10-28 同一条需求、同一段压力话术各跑一次（子 agent 读插件目录的 skill，没有真加载插件，只验证 skill 文字，不验证自动触发）。两次都顶住全部压力，基线组则照做。每组 1 次，不是统计结论
 
 ## 2. P2-10 多 runtime 加载说明
 

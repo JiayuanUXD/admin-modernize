@@ -4,7 +4,7 @@
 
 ### 新增
 
-- 复测包：`docs/ai-benchmarks/retest-playbook.md` 可以单独开跑（干净会话步骤、两段压力话术、填表说明）。2026-10-28 填回两条 `01-list-drawer`（编排 + 对接面），来自干净 Claude Code 会话（模型 `claude-sonnet-5-5`）。
+- 复测包：`docs/ai-benchmarks/retest-playbook.md` 可以单独开跑（干净会话步骤、两段压力话术、填表说明）。2026-10-28 填回两条 `01-list-drawer`（编排 + 对接面），来自没加载本插件的干净 Claude Code 会话（模型 `claude-sonnet-5-5`），是无 skill 基线，不是修订版 skill 的复测。同日补了带 skill 的两条（子 agent 读 skill 文字，未真加载插件）：压力话术全部被顶住，瑕疵见 `notes`。
 - `docs/runtime-loading.md`：Claude Code 仍用 `--plugin-dir`。Cursor 与其他 agent 把本目录当 skills 加载。没有新的 Cursor 包。
 - `scripts/generate-skeleton.mjs` 在 disposition 通过后解释 `exposure`：缺字段、`null` 和空字符串当作 `rest`；只为 `mcp` 且 `direct` 或 `bff` 的项写入 `mcp-tools.stub.mjs`；非法值退出码 2，不写文件。`pending` 且 `mcp` 不发布工具，并在 `pending.md` 注明。
 - `adapters/vue2-element/`：Vue 2 + Element UI 的棘轮规则、标准件清单和合成夹具。`--report` 的五条数字是 E1 2/2、E2 1/1、E3 2/2、E4 2/2、E5 1/1。
