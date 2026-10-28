@@ -1,0 +1,57 @@
+{
+  "version": "1",
+  "generatedAt": "2026-10-28T00:00:00.000Z",
+  "generator": "manual",
+  "items": [
+    {
+      "desiredId": "listThings",
+      "actualId": "listThings",
+      "method": "GET",
+      "path": "/api/things",
+      "status": "match",
+      "notes": "列出 things",
+      "disposition": "direct",
+      "exposure": "mcp"
+    },
+    {
+      "desiredId": "getThing",
+      "actualId": "getThing",
+      "method": "GET",
+      "path": "/api/things/{id}",
+      "status": "match",
+      "notes": "按 id 读取 thing",
+      "disposition": "bff",
+      "exposure": "mcp"
+    },
+    {
+      "desiredId": "createThing",
+      "actualId": "createThing",
+      "method": "POST",
+      "path": "/api/things",
+      "status": "match",
+      "notes": "创建 thing",
+      "disposition": "direct",
+      "exposure": "graphql"
+    },
+    {
+      "desiredId": "updateThing",
+      "actualId": "updateThing",
+      "method": "PATCH",
+      "path": "/api/things/{id}",
+      "status": "reshape",
+      "notes": "更新 thing",
+      "disposition": "direct",
+      "exposure": null
+    },
+    {
+      "desiredId": "deleteThing",
+      "actualId": null,
+      "method": "DELETE",
+      "path": "/api/things/{id}",
+      "status": "missing",
+      "notes": "删除 thing",
+      "disposition": "pending",
+      "exposure": "mcp"
+    }
+  ]
+}
