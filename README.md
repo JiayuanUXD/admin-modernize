@@ -73,6 +73,8 @@ adapters/
 claude --plugin-dir /Users/liujiayuan/App/admin-modernize
 ```
 
+Cursor 和其他能读目录的 agent 怎样加载本仓库，见 [docs/runtime-loading.md](docs/runtime-loading.md)。这里不展开 Cursor 的操作步骤。
+
 脚本也能单独跑：
 
 ```bash
