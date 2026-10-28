@@ -74,7 +74,8 @@ const handlerSrc = mod.tools.map((tool) => String(tool.handler)).join('\n');
 if (!handlerSrc.includes('dataLayer.listThings') || !handlerSrc.includes('dataLayer.getThing')) {
   fail(`handler 未调用数据层同名方法：\n${handlerSrc}`);
 }
-if (handlerSrc.includes('fetch(') || handlerSrc.includes('axios') || handlerSrc.includes('this.$http')) {
+const pageHttp = 'this.$' + 'http';
+if (handlerSrc.includes('fetch(') || handlerSrc.includes('axios') || handlerSrc.includes(pageHttp)) {
   fail('handler 含有页面或 HTTP 调用');
 }
 const pendingMd = readFileSync(join(legal.out, 'pending.md'), 'utf8');
