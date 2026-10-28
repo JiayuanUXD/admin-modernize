@@ -1,6 +1,6 @@
 {
   "name": "admin-modernize",
   "description": "让存量后台适配 AI 生成原型并对接真实后端：拓扑判定、拆仓、摸底、约束面、反馈环、对接面、存量迁移",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "author": { "name": "liujiayuan" }
 }
