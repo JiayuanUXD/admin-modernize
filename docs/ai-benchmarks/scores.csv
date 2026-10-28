@@ -1,1 +1,3 @@
 date,benchmark,model,first_pass,rework_minutes,causes,notes
+2026-10-28,01-list-drawer,claude-sonnet-5-5,yes,0,,"编排：干净会话无插件；跟压力话术写了 NOTES、跳过截图、示例数据写死；check 一次通过；note 省略语义正确"
+2026-10-28,01-list-drawer,claude-sonnet-5-5,yes,0,,"对接面：另开干净会话；跟压力做了 openapi.page.json 双契约与 GAPS（reshape=不一致=3）；但抵制了「note 没传写成空串」，仍按省略不改；check/shots 一次通过；未跑校验日志"
