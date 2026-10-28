@@ -1,0 +1,41 @@
+{
+  "baseline": "ratchet-baseline.json",
+  "rules": [
+    {
+      "id": "E1",
+      "message": "原生 `<table>` 绕过 `el-table` → 改用 `<el-table>`",
+      "globs": ["fixtures/pages/**/*.vue"],
+      "pattern": "<table(?:\\s|>|/)",
+      "stripComments": "line"
+    },
+    {
+      "id": "E2",
+      "message": "行内 style 堆叠间距 → 改成 class",
+      "globs": ["fixtures/pages/**/*.vue"],
+      "pattern": "style\\s*=\\s*\"(?:(?!\").)*(?:\\b(?:margin|padding)(?:-(?:top|right|bottom|left))?\\s*:)(?:(?!\").)*(?:\\b(?:margin|padding)(?:-(?:top|right|bottom|left))?\\s*:)",
+      "stripComments": "line"
+    },
+    {
+      "id": "E3",
+      "message": "`this.$http` 直接请求 → 改成数据层方法，例如 `this.itemsApi.list()`",
+      "globs": ["fixtures/pages/**/*.vue"],
+      "pattern": "this\\.\\$http",
+      "stripComments": "line"
+    },
+    {
+      "id": "E4",
+      "message": "硬编码色值 → 改成已有主题变量，不新增一套 token",
+      "globs": ["fixtures/pages/**/*.vue"],
+      "pattern": "#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{4}|[0-9a-fA-F]{3})\\b",
+      "exclude": "url\\(",
+      "stripComments": "line"
+    },
+    {
+      "id": "E5",
+      "message": "未消毒的 `v-html` → 改成文本插值；确需 HTML 时绑定 `sanitize(...)`",
+      "globs": ["fixtures/pages/**/*.vue"],
+      "pattern": "v-html\\s*=\\s*\"(?:(?!sanitize\\()[^\"])*\"",
+      "stripComments": "line"
+    }
+  ]
+}

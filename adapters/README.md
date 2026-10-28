@@ -24,3 +24,4 @@
 | adapter | 栈 | 来源 |
 |---|---|---|
 | `dd-design/` | React + `@ddfe/dd-design`（antd v5 风格）+ Vite | h5-fms-v3（财务系统） |
+| `vue2-element/` | Vue 2 + Element UI | 合成夹具 |
