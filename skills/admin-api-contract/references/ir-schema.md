@@ -109,7 +109,7 @@ JSON Schema（draft-07）在 `../schemas/`：
 
 `generate-skeleton` 见到 `null` 或空字符串会以退出码 1 拒绝。
 
-`exposure`：`rest | bff | mcp`。Schema 里留了这个字段，本切片的脚本不读它，生成时保持 `null`。
+`exposure`：`rest | bff | mcp`。`build-gap` 仍写 `null`，不猜测暴露面。`generate-skeleton` 在 `disposition` 通过之后先去掉首尾空白：缺字段、`null` 和空字符串当作 `rest`；`rest`、`bff`、`mcp` 保持原值；其他值（含 `MCP`、`REST`、`BFF`）退出码 2，不写文件。只为规范化后是 `mcp` 且 `disposition` 为 `direct` 或 `bff` 的项，在同一次成功运行里写入 `mcp-tools.stub.mjs`。`pending` 且 `mcp` 不发布工具，`pending.md` 注明原因。`exposure: bff` 不改变 `disposition: bff` 的映射语义。页面路径仍走数据层，不读取该 stub。
 
 ## 脚本怎么规范化
 
