@@ -8,9 +8,9 @@
 
 ## 1. 复测包
 
-剧本和只有表头的 `docs/ai-benchmarks/scores.csv` 已经可以独立使用。下面这一项等用户填回，现在不勾。勾选条件是：用户把编排、对接面两行写入分数表，且这两行不是在带本插件 skill 的会话里产生的。
+剧本和 `docs/ai-benchmarks/scores.csv` 已经可以独立使用。2026-10-28 已填回编排、对接面两行（干净 Claude Code 会话，无本插件 skill，模型 `claude-sonnet-5-5`），下面这一项已勾。
 
-- [ ] 全新 agent 复测：用户已把编排与对接面两行填回 `docs/ai-benchmarks/scores.csv`，且不是在带本插件 skill 的会话里产生的
+- [x] 全新 agent 复测：用户已把编排与对接面两行填回 `docs/ai-benchmarks/scores.csv`，且不是在带本插件 skill 的会话里产生的
 
 ## 2. P2-10 多 runtime 加载说明
 
