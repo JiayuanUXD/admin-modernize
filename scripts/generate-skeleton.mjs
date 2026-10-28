@@ -3,10 +3,14 @@
  * generate-skeleton：差距表过了人工门禁之后，写出映射骨架（Node 18+，无依赖）。
  *
  * 任一条 disposition 为 null 或空字符串 → 退出码 1，不写文件。
+ * disposition 不是 direct / bff / pending → 退出码 2，不写文件。
+ * exposure 缺字段、null、仅空白 → 当作 rest。
+ * exposure 不是 rest / bff / mcp（大小写不纠正）→ 退出码 2，不写文件。
  * direct / bff → mappers.mjs
  * pending → pending-endpoints.json + pending.md
  * 全部操作 → route-mode.json（direct/bff 为 real，pending 为 pending）
  * client.stub.mjs 是 typed client 入口骨架，不是完整客户端。
+ * 每次成功都写 mcp-tools.stub.mjs。tools 只含 exposure 为 mcp 且 disposition 为 direct 或 bff 的项。
  *
  * 用法
  *   node generate-skeleton.mjs --gap <gap.ir.json> --out-dir <目录>
@@ -21,6 +25,8 @@ const USAGE = [
   '',
   '人工门禁：每条差距的 disposition 必须是 direct、bff 或 pending。',
   '有空值就拒绝（退出码 1），不生成文件。',
+  'disposition 通过之后检查 exposure：缺省当作 rest；只能是 rest、bff、mcp。',
+  '非法 exposure 退出码 2，不生成文件。',
 ].join('\n');
 
 const die = (msg, code = 2) => { console.error(`✘ ${msg}`); process.exit(code); };
@@ -49,6 +55,7 @@ catch (e) { die(`${gapPath} 不是合法 JSON：${e.message}`); }
 if (!gap || !Array.isArray(gap.items)) die(`${gapPath} 不是 gap IR：缺少 items`);
 
 const ALLOWED = new Set(['direct', 'bff', 'pending']);
+const EXPOSURES = new Set(['rest', 'bff', 'mcp']);
 const blocked = [];
 for (const [i, item] of gap.items.entries()) {
   if (!item || typeof item !== 'object') die(`第 ${i + 1} 条不是对象`);
@@ -71,6 +78,14 @@ if (blocked.length) {
   ].join('\n'), 1);
 }
 
+for (const [i, item] of gap.items.entries()) {
+  const raw = item.exposure;
+  const text = raw == null ? '' : String(raw).trim();
+  if (text === '') item.exposure = 'rest';
+  else if (EXPOSURES.has(text)) item.exposure = text;
+  else die(`第 ${i + 1} 条 exposure 无效：${text}。只能是 rest、bff、mcp；缺省当作 rest。不写文件。`);
+}
+
 const DIR = resolve(outDir);
 mkdirSync(DIR, { recursive: true });
 const generatedAt = new Date().toISOString();
@@ -82,6 +97,21 @@ function comment(text) {
 }
 function fnName(id) {
   return /^[A-Za-z_$][\w$]*$/.test(id) ? id : null;
+}
+function pathParams(path) {
+  return [...String(path).matchAll(/\{([^/\s}]+)\}/g)].map((match) => match[1]);
+}
+function inputSchema(path) {
+  const params = pathParams(path);
+  const properties = {};
+  for (const name of params) properties[name] = { type: 'string' };
+  const schema = { type: 'object', additionalProperties: false, properties };
+  if (params.length) schema.required = params;
+  return schema;
+}
+function toolDescription(item) {
+  const notes = String(item.notes ?? '').trim();
+  return notes || `${item.method} ${item.path}`;
 }
 
 const operationLiterals = actionable.map((item) => `  ${JSON.stringify({
@@ -164,6 +194,9 @@ const pendingDoc = {
 const pendingLines = pending.length
   ? pending.map((item) => `| ${item.desiredId} | ${item.method} | ${item.path} | ${item.status || ''} | ${String(item.notes || '').replace(/\|/g, '\\|')} |`)
   : ['| — | — | — | — | 没有 pending |'];
+const pendingMcpLines = pending
+  .filter((item) => item.exposure === 'mcp')
+  .map((item) => `${item.desiredId}：已标 \`mcp\`，后端未提供，所以没有工具。`);
 const pendingMd = `# 待后端提供
 
 这些接口的处置是 \`pending\`。页面应提示「后端尚未提供」，不要 mock 成成功。
@@ -171,6 +204,29 @@ const pendingMd = `# 待后端提供
 | id | method | path | status | notes |
 |---|---|---|---|---|
 ${pendingLines.join('\n')}
+${pendingMcpLines.length ? `\n${pendingMcpLines.join('\n')}\n` : ''}`;
+
+const mcpItems = gap.items.filter((item) => item.exposure === 'mcp' && (item.disposition === 'direct' || item.disposition === 'bff'));
+const toolLiterals = mcpItems.map((item) => {
+  const ident = fnName(item.desiredId);
+  const call = ident ? `dataLayer.${ident}(input)` : `dataLayer[${JSON.stringify(item.desiredId)}](input)`;
+  const schema = JSON.stringify(inputSchema(item.path), null, 2).replace(/\n/g, '\n    ');
+  return `  {
+    name: ${JSON.stringify(item.desiredId)},
+    description: ${JSON.stringify(toolDescription(item))},
+    inputSchema: ${schema},
+    handler(dataLayer, input) {
+      return ${call};
+    },
+  }`;
+}).join(',\n');
+const mcpStub = `/**
+ * 这是给 Agent 直接调用的占位，不是服务器，也不是页面要 import 的模块。
+ * 由 generate-skeleton 写出。页面和映射层不要 import 本文件。
+ */
+export const tools = [
+${toolLiterals}
+];
 `;
 
 writeFileSync(join(DIR, 'mappers.mjs'), mappers);
@@ -178,4 +234,5 @@ writeFileSync(join(DIR, 'client.stub.mjs'), client);
 writeFileSync(join(DIR, 'route-mode.json'), `${JSON.stringify(routeMode, null, 2)}\n`);
 writeFileSync(join(DIR, 'pending-endpoints.json'), `${JSON.stringify(pendingDoc, null, 2)}\n`);
 writeFileSync(join(DIR, 'pending.md'), pendingMd);
+writeFileSync(join(DIR, 'mcp-tools.stub.mjs'), mcpStub);
 console.log(DIR);

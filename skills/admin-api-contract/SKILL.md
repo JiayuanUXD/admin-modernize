@@ -35,10 +35,10 @@ description: Use when prototype or AI-generated admin pages must be connected to
 2. **拿实际** — 后端 OpenAPI JSON，或已经整理好的 actual IR。没有 OpenAPI、但路由和实现已经写在代码里时，不要另编一份 OpenAPI：按代码写 actual IR，每条带 `sources`（`file` + `lineStart`）。本切片不解析 YAML；OpenAPI 用 JSON（样例是 `fixtures/sample-app/actual.openapi.json`）。真实切片见 `docs/pilots/dingdong-ux-radar-insights/`。
 3. **比差距** — `scripts/build-gap.mjs --desired <desired.ir.json> --actual <openapi.json|actual.ir.json> [--out gap.ir.json]`
    按方法 + 规范化路径对齐。`match` 是响应字段集合相同，`reshape` 是路径相同但字段不同，`missing` 是期望有而实际没有。`disposition` 先空着。实际多出来的接口不进这张表。
-4. **人工门禁** — 给每条差距填 `disposition`：`direct`（直连）、`bff`（适配层映射）、`pending`（后端还没有）。空着不能往下走。
+4. **人工门禁** — 给每条差距填 `disposition`：`direct`（直连）、`bff`（适配层映射）、`pending`（后端还没有）。空着不能往下走。同一轮可以填 `exposure`：`rest`、`bff` 或 `mcp`。缺省保持 `null`。`exposure` 不改变 `disposition` 的映射语义。
 5. **生成骨架** — `../../scripts/generate-skeleton.mjs --gap <gap.ir.json> --out-dir <目录>`
-   任一 `disposition` 为空则退出码 1，不写文件。`direct` / `bff` 写入 `mappers.mjs`；`pending` 写入 `pending-endpoints.json` 和 `pending.md`；`route-mode.json` 把操作标成 `real` 或 `pending`（`mock` 留给之后手改）。`client.stub.mjs` 只是 typed client 入口骨架，不是完整客户端。
-6. **接数据层** — 按 `references/data-layer-checklist.md` 把页面改到数据层上，对照骨架审字段。`exposure`（`rest` / `bff` / `mcp`）本切片不参与生成。
+   任一 `disposition` 为空则退出码 1，不写文件。`direct` / `bff` 写入 `mappers.mjs`；`pending` 写入 `pending-endpoints.json` 和 `pending.md`；`route-mode.json` 把操作标成 `real` 或 `pending`（`mock` 留给之后手改）。`client.stub.mjs` 只是 typed client 入口骨架，不是完整客户端。成功时总会写出 `mcp-tools.stub.mjs`。`tools` 只收录规范化后 `exposure` 为 `mcp` 且 `disposition` 为 `direct` 或 `bff` 的项。`pending` 且 `mcp` 不发布工具，并在 `pending.md` 注明。`exposure` 缺字段、`null` 或空字符串当作 `rest`。其他值（包括 `MCP`、`REST`、`BFF`、`graphql`）退出码 2，不写任何骨架文件。检查在创建输出目录之前做完。
+6. **接数据层** — 按 `references/data-layer-checklist.md` 把页面改到数据层上，对照骨架审字段。页面不 import `mcp-tools.stub.mjs`，也不走 MCP。Agent 要直接调某个能力时，只用 `exposure: mcp` 且已经可调用的那份工具 stub。`build-gap` 仍把 `exposure` 写成 `null`；`generate-skeleton` 把 `null` 和空字符串当作 `rest`，只为 `mcp` 且 `disposition` 为 `direct` 或 `bff` 的项写入工具；非法值退出码 2。
 7. **切真接口后跑校验** — `scripts/check-contract.mjs --actual <actual.ir.json> [--desired <desired.ir.json>] --samples <录制目录> [--base http://127.0.0.1:端口]`
    对照 `response.fields` 的顶层键。同一方法 + 路径在 actual 和 desired 里都有时，整条用 actual。缺字段打 `CONTRACT_MISMATCH`，多余字段打 `CONTRACT_WARNING`（warning 不计 mismatch）。`--base` 拉失败打 `CONTRACT_ERROR`，脚本不崩，这次失败不进 mismatch。
    最后一行是 `CONTRACT_SUMMARY mismatch_count=N warning_count=M checked=K error_count=E`。`mismatch_count>0` 或有 error 时退出码 1。样例在 `fixtures/contract-check/`。
